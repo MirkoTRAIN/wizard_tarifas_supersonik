@@ -1,0 +1,2324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metodología Trainingym · Las 4 palancas (presentación)</title>
+  <meta name="description" content="Las 4 palancas que hacen crecer un negocio fitness: Captación, Ahorro de tiempo, Fidelización e Ingresos.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --orange: #ED6845;
+      --grafito: #1D1D1B;
+      --petrol: #293138;
+      --gris: #F2F3F7;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Host Grotesk', system-ui, sans-serif;
+      background: #0e0e0c;
+      color: #fff;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ─── Top bar ─── */
+    .topbar {
+      padding: 0.6rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .topbar-left {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 18px;
+    }
+    .topbar img { height: 40px; width: auto; }
+    .topbar a {
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      transition: color 0.15s;
+      padding-top: 4px;
+    }
+    .topbar a:hover { color: var(--orange); }
+
+    /* Botón "Inicio" debajo del logo */
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.75);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      opacity: 1;
+    }
+    .home-btn:hover {
+      background: rgba(237,104,69,0.10);
+      border-color: rgba(237,104,69,0.5);
+      color: var(--orange);
+    }
+    .home-btn svg { display: block; }
+    /* En home-mode el botón queda oculto (no tiene sentido volver a la home si ya estás) */
+    body.home-mode .home-btn {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-4px);
+    }
+    .home-btn {
+      transition: opacity 0.25s ease, transform 0.25s ease, background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    }
+
+    /* ─── Sección metodología ─── */
+    .methodology-section {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 1.5rem;
+    }
+    /* En modo zoom (palanca abierta) ocupa exactamente el viewport sin scroll */
+    @media (min-width: 1101px) {
+      body:not(.home-mode) { overflow: hidden; height: 100vh; }
+      body:not(.home-mode) .methodology-section {
+        height: calc(100vh - 64px);
+        max-height: calc(100vh - 64px);
+        padding-bottom: 0.5rem;
+        overflow: hidden;
+      }
+      body:not(.home-mode) .palancas-row {
+        flex: 1; min-height: 0;
+        display: flex; flex-direction: column;
+        padding-bottom: 0;
+      }
+      body:not(.home-mode) .palancas-grid { flex: 1; min-height: 0; }
+      body:not(.home-mode) .palanca-col.active {
+        display: flex !important; flex-direction: column;
+        min-height: 0; height: 100%;
+      }
+      body:not(.home-mode) .palancas-row {
+        flex: 1; min-height: 0;
+        display: flex; flex-direction: column;
+        padding-bottom: 0;
+      }
+      body:not(.home-mode) .palancas-grid { flex: 1; min-height: 0; }
+      body:not(.home-mode) .palanca-col.active {
+        display: flex !important; flex-direction: column;
+        min-height: 0; height: 100%;
+      }
+
+    }
+
+    /* ═══ HOME MODE: vista inicial con solo título + línea con puntos ═══ */
+    /* Cuando .palancas-grid tiene .home-mode, los tabs se ocultan
+       y todas las palancas se muestran en formato ULTRA-compacto:
+       solo el nombre + un punto en la línea naranja horizontal */
+    body.home-mode .palanca-tabs {
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      max-height: 0;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      transition: opacity 0.3s ease;
+    }
+    body.home-mode .hero {
+      padding: 0.25rem 1.5rem 0.5rem;
+      transition: padding 0.4s ease;
+    }
+    body.home-mode .hero h1 {
+      font-size: clamp(40px, 5.5vw, 64px);
+      transition: font-size 0.4s ease;
+    }
+    /* El grid en home: línea horizontal con 4 puntos (display:table — más robusto) */
+    body.home-mode .palancas-grid {
+      display: table !important;
+      table-layout: fixed !important;
+      width: 100% !important;
+      max-width: 1400px;
+      margin: 3rem auto 0;
+      padding: 0 3rem;
+      position: relative;
+      box-sizing: border-box;
+      gap: 0 !important;
+      grid-template-columns: none !important;
+    }
+    /* Línea horizontal naranja conectando los 4 puntos */
+    body.home-mode .palancas-grid::before {
+      content: '';
+      position: absolute;
+      top: 48px;
+      left: calc(3rem + 12.5%);
+      right: calc(3rem + 12.5%);
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, #ED6845 8%, #ED6845 92%, transparent 100%);
+    }
+    /* En home, todas las palancas son "tarjetas planas" — solo punto + nombre */
+    body.home-mode .palanca-col {
+      display: table-cell !important;
+      vertical-align: top !important;
+      width: 25% !important;
+      box-sizing: border-box;
+      background: transparent !important;
+      border-radius: 0 !important;
+      overflow: visible !important;
+      cursor: pointer;
+      opacity: 1 !important;
+      position: relative;
+      min-height: 200px;
+      padding: 92px 0 40px !important;
+      margin: 0;
+      transition: transform 0.3s ease;
+    }
+    body.home-mode .palanca-col:hover {
+      transform: translateY(-4px);
+    }
+    body.home-mode .palanca-col .palanca-head,
+    body.home-mode .palanca-col .palanca-mini-stat,
+    body.home-mode .palanca-col .palanca-body,
+    body.home-mode .palanca-col .cap-embed {
+      display: none !important;
+    }
+    /* Punto/nodo en la línea */
+    body.home-mode .palanca-col::before {
+      content: '';
+      position: absolute;
+      top: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #1D1D1B;
+      border: 3px solid #ED6845;
+      transition: all 0.25s ease;
+      z-index: 1;
+    }
+    body.home-mode .palanca-col:hover::before {
+      background: #ED6845;
+      transform: translateX(-50%) scale(1.18);
+      box-shadow: 0 0 26px rgba(237,104,69,0.65);
+    }
+    /* Nombre de la palanca debajo del punto */
+    body.home-mode .palanca-col::after {
+      content: attr(data-name);
+      position: absolute;
+      top: 92px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: clamp(26px, 2.6vw, 36px);
+      font-weight: 700;
+      color: rgba(255,255,255,0.92);
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+      transition: color 0.2s ease;
+    }
+    body.home-mode .palanca-col:hover::after {
+      color: var(--orange);
+    }
+
+
+    /* Hint global debajo de la línea */
+    .home-hint {
+      display: none;
+      text-align: center;
+      margin: 0 auto 2rem;
+      max-width: 600px;
+      padding: 0 1.5rem;
+      color: rgba(255,255,255,0.45);
+      font-size: 13px;
+      font-style: italic;
+      letter-spacing: 0.2px;
+    }
+    body.home-mode .home-hint { display: block; }
+    body.home-mode .scroll-hint { display: none; }
+    body.home-mode .cta-section { display: none; }
+    body.home-mode .methodology-section { padding-bottom: 0; }
+
+    /* Mobile home: vertical line en lugar de horizontal */
+    @media (max-width: 760px) {
+      body.home-mode .hero {
+        padding: 2rem 1.25rem 1rem;
+      }
+      body.home-mode .hero h1 {
+        font-size: clamp(26px, 6vw, 32px);
+      }
+      body.home-mode .palancas-grid {
+        grid-template-columns: 1fr !important;
+        max-width: 480px;
+        padding: 0 1.5rem;
+        margin-top: 1.5rem;
+      }
+      body.home-mode .palancas-grid::before {
+        top: 0;
+        bottom: 0;
+        left: calc(1.5rem + 17px);
+        right: auto;
+        width: 3px;
+        height: auto;
+        background: linear-gradient(180deg, transparent 0%, #ED6845 8%, #ED6845 92%, transparent 100%);
+      }
+      body.home-mode .palanca-col {
+        flex-direction: row;
+        min-height: 0;
+        padding: 22px 0 22px 56px !important;
+        align-items: center;
+        text-align: left;
+      }
+      body.home-mode .palanca-col::before {
+        top: 50%;
+        left: 4px;
+        transform: translateY(-50%);
+        width: 26px;
+        height: 26px;
+        border-width: 3px;
+      }
+      body.home-mode .palanca-col:hover::before {
+        transform: translateY(-50%) scale(1.15);
+      }
+      body.home-mode .palanca-col::after {
+        position: static;
+        text-align: left;
+        font-size: 19px;
+        flex: 1;
+        margin-right: 12px;
+      }
+      body.home-mode .palanca-home-cta {
+        margin-top: 0;
+        margin-left: auto;
+        font-size: 11px;
+        padding: 9px 16px;
+        letter-spacing: 1px;
+      }
+      .home-hint { font-size: 13px; padding-top: 1rem; }
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem 1rem;
+      text-align: center;
+      transition: padding 0.35s ease;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 60px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+      margin: 0;
+      transition: font-size 0.35s ease;
+    }
+    .hero h1 strong { color: var(--orange); font-weight: 800; }
+    body:not(.home-mode) .hero { display: none; }
+    
+
+    /* ─── Selector de palanca (línea con puntos — mismo lenguaje que home-mode) ─── */
+    .palanca-tabs {
+      max-width: 900px;
+      margin: 0.25rem auto 0.5rem;
+      padding: 0 3rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .palanca-tabs::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: calc(3rem + 12.5%);
+      right: calc(3rem + 12.5%);
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, #ED6845 8%, #ED6845 92%, transparent 100%);
+      z-index: 0;
+    }
+    .palanca-tab {
+      background: transparent;
+      border: none;
+      padding: 38px 4px 0;
+      font-family: inherit;
+      cursor: pointer;
+      position: relative;
+      text-align: center;
+      transition: transform 0.2s ease;
+      color: inherit;
+    }
+    .palanca-tab::before {
+      content: '';
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #1D1D1B;
+      border: 2.5px solid #ED6845;
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      z-index: 1;
+    }
+    .palanca-tab:hover { transform: translateY(-2px); }
+    .palanca-tab:hover::before {
+      background: rgba(237,104,69,0.55);
+      transform: translateX(-50%) scale(1.12);
+      box-shadow: 0 0 16px rgba(237,104,69,0.5);
+    }
+    .palanca-tab-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.2;
+      transition: color 0.2s ease;
+    }
+    .palanca-tab:hover .palanca-tab-name { color: var(--orange); }
+    .palanca-tab.on::before { background: #ED6845; box-shadow: 0 0 18px rgba(237,104,69,0.65); }
+    .palanca-tab.on .palanca-tab-name { color: var(--gris); }
+    .palanca-tab.on { cursor: default; }
+    @media (max-width: 760px) {
+      .palanca-tabs {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: #0e0e0c;
+        padding-top: 0.85rem;
+        padding-bottom: 0.85rem;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+      }
+      .palanca-tab {
+        padding: 0.7rem 0.5rem;
+        font-size: 12.5px;
+      }
+      .palanca-tab-name { font-size: 12.5px; }
+    }
+    @media (max-width: 480px) {
+      .palanca-tabs {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.4rem;
+      }
+      .palanca-tab {
+        padding: 0.6rem 0.4rem;
+      }
+      .palanca-tab-name { font-size: 12px; }
+    }
+
+    /* ─── Contenedor principal con las 4 palancas en línea ─── */
+    .palancas-row {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+    }
+    .palancas-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      transition: grid-template-columns 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    /* Modos zoom: solo la palanca activa visible */
+    .palancas-grid.zoom-cap,
+    .palancas-grid.zoom-tiem,
+    .palancas-grid.zoom-fid,
+    .palancas-grid.zoom-ing {
+      grid-template-columns: 1fr;
+      max-width: 1900px;
+      margin: 0 auto;
+    }
+    .palancas-grid[class*="zoom-"] .palanca-col:not(.active) { display: none; }
+    @media (max-width: 1100px) {
+      /* En móvil la metodología NO se fuerza a 100vh — las 4 palancas se apilan */
+      .methodology-section {
+        min-height: 0;
+        display: block;
+        padding-bottom: 0;
+      }
+      .scroll-hint { display: none; }
+
+      .palancas-grid,
+      .palancas-grid.zoom-cap,
+      .palancas-grid.zoom-tiem,
+      .palancas-grid.zoom-fid,
+      .palancas-grid.zoom-ing {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      /* En móvil/tablet, TODAS las palancas se muestran expandidas (no hay modo compacto) */
+      .palancas-grid[class*="zoom-"] .palanca-col:not(.active) {
+        opacity: 1;
+      }
+      .palanca-col:not(.active) .cap-h-line { display: block; }
+      .palanca-col:not(.active) .cap-tl-wrap { padding: 0 32px; }
+      .palanca-col:not(.active) .cap-timeline {
+        flex-direction: column;
+        min-height: 0;
+        gap: 0;
+      }
+      .palanca-col:not(.active) .cap-item {
+        padding: 16px 18px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        flex: none;
+      }
+      .palanca-col:not(.active) .cap-item:hover {
+        flex: none;
+        background: rgba(237,104,69,0.05);
+      }
+      .palanca-col:not(.active) .cap-kicker {
+        font-size: 14px;
+        line-height: 1.4;
+      }
+      .palanca-col:not(.active) .cap-sep {
+        display: block;
+        width: 24px;
+        margin: 9px 0;
+      }
+      .palanca-col:not(.active) .cap-headline {
+        display: block;
+        max-height: none;
+        opacity: 1;
+        transform: none;
+        font-size: 12.5px;
+        margin-bottom: 5px;
+      }
+      .palanca-col:not(.active) .cap-desc {
+        display: block;
+        max-height: none;
+        opacity: 1;
+        font-size: 11px;
+      }
+      .palanca-col:not(.active) .cap-hint {
+        display: flex;
+        opacity: 1;
+        margin-top: 9px;
+      }
+      .palanca-col:not(.active) .cap-ft {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .palanca-col:not(.active) .palanca-zoom-hint { display: none; }
+      .palanca-col:not(.active) .palanca-mini-stat { display: none; }
+      .palanca-col:not(.active) .cap-embed::after { display: block; }
+    }
+    /* Móvil estricto: cap-ft más legible */
+    @media (max-width: 760px) {
+      .cap-ft {
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 14px 16px;
+      }
+      .cap-ft-arrow { margin: 0 6px; font-size: 10px; }
+      .cap-ft-label { font-size: 9.5px; letter-spacing: 1.2px; }
+      .cap-ft-eq { margin: 0 8px; }
+      .cap-ft-goal { padding: 6px 12px; }
+      .cap-ft-num { font-size: 16px; }
+      .cap-tl-wrap { padding: 0 16px !important; }
+      .cap-h-line { display: none; }
+      .cap-item { padding: 14px 4px !important; }
+    }
+
+    /* ─── Cada palanca ─── */
+    .palanca-col {
+      background: transparent;
+      border-radius: 0;
+      overflow: hidden;
+      transition: opacity 0.3s ease;
+      cursor: pointer;
+    }
+    .palanca-col.active { cursor: default; }
+
+    /* Cabecera de cada palanca */
+    .palanca-head {
+      display: none;
+    }
+    .palanca-head-name {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      color: #fff;
+      text-transform: none;
+    }
+    .palanca-head-num {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--orange);
+      text-transform: uppercase;
+    }
+    .palanca-col.active .palanca-head-name { color: var(--orange); }
+
+    /* Contenido — modo COMPACTO (no zoom) */
+    .palanca-body {
+      position: relative;
+      transition: opacity 0.3s ease;
+    }
+    .palanca-col:not(.active) .cap-embed-inner {
+      padding: 0.8rem 0.85rem;
+    }
+    .palanca-col:not(.active) .cap-h-line { display: none; }
+    .palanca-col:not(.active) .cap-tl-wrap { padding: 0; }
+    .palanca-col:not(.active) .cap-timeline {
+      flex-direction: column;
+      min-height: 0;
+      gap: 0;
+    }
+    .palanca-col:not(.active) .cap-item {
+      padding: 0.55rem 0;
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      flex: none;
+    }
+    .palanca-col:not(.active) .cap-item:last-child { border-bottom: none; }
+    .palanca-col:not(.active) .cap-item:hover { flex: none; background: transparent; }
+    .palanca-col:not(.active) .cap-kicker {
+      font-size: 11.5px;
+      line-height: 1.35;
+    }
+    .palanca-col:not(.active) .cap-sep,
+    .palanca-col:not(.active) .cap-headline,
+    .palanca-col:not(.active) .cap-desc,
+    .palanca-col:not(.active) .cap-hint,
+    .palanca-col:not(.active) .cap-ft {
+      display: none;
+    }
+    .palanca-col:not(.active) .cap-embed::after { display: none; }
+
+    /* Hint para palancas no expandidas */
+    .palanca-col:not(.active) .palanca-zoom-hint {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--orange);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 0.6rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid rgba(237,104,69,0.15);
+      text-align: center;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .palanca-col:not(.active):hover .palanca-zoom-hint { opacity: 1; }
+    .palanca-col.active .palanca-zoom-hint { display: none; }
+
+    /* Footer info para vista compacta */
+    .palanca-mini-stat {
+      display: none;
+      padding: 0.55rem 0.85rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      background: rgba(237,104,69,0.05);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--orange);
+      text-align: center;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .palanca-col:not(.active) .palanca-mini-stat { display: block; }
+
+    /* Wrapper para la versión expandida — usa el CSS original .cap-* */
+    .palanca-col.active .cap-embed {
+      background: transparent;
+      border-radius: 0;
+    }
+
+    .cap-embed {
+      font-family:'Host Grotesk',system-ui,sans-serif;
+      background:transparent;
+      border-radius:0;
+      overflow:hidden;
+      position:relative;
+    }
+    .cap-embed::after { display: none; }
+
+    /* header */
+    .cap-hd {
+      display:flex; align-items:center; justify-content:center;
+      padding:14px 32px; border-bottom:1px solid rgba(255,255,255,.04);
+      position:relative; z-index:2;
+    }
+    .cap-hd-title {
+      font-size:11px; font-weight:600; color:rgba(255,255,255,.6);
+      letter-spacing:5px; text-transform:uppercase;
+    }
+    .cap-hd-title span { color:#ED6845; }
+
+    /* timeline wrapper */
+    .cap-tl-wrap {
+      position:relative; z-index:2;
+      padding:8px 32px 0;
+    }
+    .cap-h-line {
+      width:100%; height:2px;
+      background:linear-gradient(90deg, transparent 0%, #ED6845 6%, #ED6845 94%, transparent 100%);
+      position:relative; flex-shrink:0; margin:0;
+    }
+    .cap-h-line::before, .cap-h-line::after {
+      content:''; position:absolute;
+      width:10px; height:10px;
+      background:#1D1D1B; border:2px solid #ED6845;
+      border-radius:50%; top:50%; transform:translateY(-50%);
+    }
+    .cap-h-line::before { left:calc(12.5% - 5px); }
+    .cap-h-line::after  { right:calc(12.5% - 5px); }
+    .cap-dot-2 { position:absolute; width:10px; height:10px; background:#1D1D1B; border:2px solid #ED6845; border-radius:50%; top:50%; transform:translateY(-50%); left:calc(37.5% - 5px); }
+    .cap-dot-3 { position:absolute; width:10px; height:10px; background:#1D1D1B; border:2px solid #ED6845; border-radius:50%; top:50%; transform:translateY(-50%); left:calc(62.5% - 5px); }
+
+    .cap-timeline { display:flex; align-items:stretch; }
+    .cap-item {
+      flex:1; min-width:0; padding:22px 24px 18px;
+      border-right:1px solid rgba(255,255,255,.05);
+      cursor:default; position:relative; overflow:hidden;
+      display:flex; flex-direction:column;
+      transition: background 0.35s ease;
+    }
+    .cap-item:last-child { border-right:none; }
+    
+    .cap-item::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+      background:#ED6845; transform:scaleX(0); transform-origin:left;
+      transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .cap-item:hover::after { transform:scaleX(1); }
+
+    .cap-kicker {
+      font-size:clamp(18px,1.5vw,23px); font-weight:500;
+      color:rgba(255,255,255,.88); line-height:1.35;
+      word-break:break-word; overflow-wrap:break-word; hyphens:auto;
+      margin:0;
+    }
+    .cap-kicker .cap-hl { color:#ED6845; font-weight:700; }
+
+    /* Headline, desc y sep ocultos en tarjeta — el pop-up muestra el detalle */
+    .cap-sep, .cap-headline, .cap-desc { display:none; }
+    .cap-hint { display:none !important; }
+    .cap-item:hover .cap-hint { opacity:1; }
+    .cap-hint-line { width:18px; height:1px; background:rgba(237,104,69,.55); }
+    .cap-hint-txt { font-size:11px; font-weight:600; color:#ED6845; letter-spacing:2.5px; text-transform:uppercase; }
+
+    /* footer */
+    .cap-ft {
+      display:flex; align-items:center; justify-content:center;
+      gap:0; padding:24px 28px 18px;
+      border-top:1px solid rgba(255,255,255,.06);
+      position:relative; z-index:2;
+    }
+    .cap-ft-label { font-size:14px; font-weight:600; color:rgba(255,255,255,.42); letter-spacing:2.2px; text-transform:uppercase; flex-shrink:0; }
+    .cap-ft-pct { font-size:12px; color:#ED6845; margin-left:6px; font-weight:700; flex-shrink:0; }
+    .cap-ft-arrow { font-size:14px; color:rgba(255,255,255,.25); margin:0 16px; flex-shrink:0; }
+    .cap-ft-eq { font-size:20px; font-weight:600; color:#ED6845; opacity:.8; margin:0 18px; flex-shrink:0; }
+    .cap-ft-goal { display:flex; align-items:center; gap:12px; background:rgba(237,104,69,.10); border:1px solid rgba(237,104,69,.4); border-left:4px solid #ED6845; padding:8px 18px; flex-shrink:0; border-radius:4px; }
+    .cap-ft-num { font-size:24px; font-weight:800; color:#ED6845; line-height:1; }
+    .cap-ft-desc { font-size:12px; font-weight:700; color:rgba(237,104,69,.85); letter-spacing:2px; text-transform:uppercase; line-height:1.35; }
+
+    /* ── Captación modal overlay ── */
+    .cap-overlay {
+      position:fixed; inset:0; z-index:500;
+      background:rgba(10,10,8,.9);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none;
+      transition:opacity 0.3s ease;
+      backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
+    }
+    .cap-overlay.open { opacity:1; pointer-events:all; }
+    .cap-modal {
+      width: min(1500px, 96vw);
+      height: min(840px, 92vh);
+      background:#232321;
+      border:1px solid rgba(255,255,255,.06);
+      display:grid; grid-template-columns:400px 1px 1fr;
+      grid-template-rows: 1fr;
+      position:relative; overflow:hidden;
+      transform:scale(0.95) translateY(16px);
+      transition:transform 0.45s cubic-bezier(0.16,1,0.3,1);
+      font-family:'Host Grotesk',system-ui,sans-serif;
+      border-radius:6px;
+    }
+    .cap-overlay.open .cap-modal { transform:scale(1) translateY(0); }
+    .cap-modal::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:#ED6845; z-index:2; }
+    .cap-modal::after { content:''; position:absolute; inset:0; background-image:radial-gradient(rgba(255,255,255,.02) 1px,transparent 1px); background-size:36px 36px; pointer-events:none; }
+    .cap-close { position:absolute; top:18px; right:22px; width:32px; height:32px; border:1px solid rgba(255,255,255,.12); background:transparent; color:rgba(255,255,255,.4); border-radius:50%; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; transition:border-color .2s,color .2s,background .2s; z-index:10; font-family:'Host Grotesk',sans-serif; }
+    .cap-close:hover { border-color:#ED6845; color:#ED6845; background:rgba(237,104,69,.08); }
+    .cap-mleft { position:relative; z-index:1; padding:56px 40px 48px 52px; display:flex; flex-direction:column; justify-content:center; gap:16px; overflow:hidden; min-height:0; height:100%; }
+    .cap-mghost { position:absolute; bottom:-20px; left:-12px; font-size:200px; font-weight:800; line-height:1; color:transparent; -webkit-text-stroke:1px rgba(255,255,255,.05); pointer-events:none; user-select:none; letter-spacing:-12px; }
+    .cap-mtag { display:flex; align-items:center; gap:10px; }
+    .cap-mtag-line { width:22px; height:2px; background:#ED6845; }
+    .cap-mtag-txt { font-size:12px; font-weight:700; color:#ED6845; letter-spacing:4px; text-transform:uppercase; }
+    .cap-mtitle { font-size:clamp(34px, 3vw, 48px); font-weight:800; color:#fff; line-height:1.08; letter-spacing:-1.4px; padding-top:2px; word-break:break-word; overflow-wrap:break-word; flex-shrink:0; }
+    .cap-mtitle .cap-hl { color:#ED6845; }
+    .cap-mkicker { font-size:16px; font-weight:300; font-style:italic; color:rgba(255,255,255,.6); line-height:1.55; max-width:100%; margin:0; flex-shrink:0; }
+    .cap-mdiv { background:linear-gradient(to bottom, transparent 5%, rgba(237,104,69,.2) 25%, rgba(237,104,69,.2) 75%, transparent 95%); }
+    .cap-mright { position:relative; z-index:1; padding:40px 48px 36px 46px; display:flex; flex-direction:column; gap:0; justify-content:space-between; overflow:hidden; height:100%; min-height:0; }
+    .cap-mright::-webkit-scrollbar { width:4px; }
+    .cap-mright::-webkit-scrollbar-thumb { background:rgba(237,104,69,.25); border-radius:2px; }
+
+    /* Capítulo "La realidad del centro" — más serio */
+    .cap-chapter { padding:0; border-bottom:none; display:flex; flex-direction:column; gap:7px; }
+    .cap-chapter:first-child { padding-top:4px; }
+    .cap-chapter:last-child { border-bottom:none; padding-bottom:4px; }
+    .cap-ch-label { font-size:12px; font-weight:700; color:#ED6845; letter-spacing:3px; text-transform:uppercase; margin-bottom:0; }
+
+    /* Capítulo "Cómo lo resuelve Trainingym" — destacado en naranja */
+    .cap-chapter.cap-tg {
+      background:linear-gradient(135deg, rgba(237,104,69,0.07) 0%, rgba(237,104,69,0.02) 100%);
+      margin:0 -20px;
+      padding:18px 20px;
+      border-radius:8px;
+      border:1px solid rgba(237,104,69,0.2);
+    }
+    .cap-chapter.cap-tg .cap-ch-label { color:#fff; background:#ED6845; padding:5px 14px; width:fit-content; font-size:11.5px; letter-spacing:2.6px; border-radius:99px; }
+    .cap-ch-title { font-size:clamp(18px, 1.35vw, 22px); font-weight:700; color:#fff; line-height:1.25; letter-spacing:-0.3px; margin:0; }
+    .cap-ch-body { font-size:clamp(14px, 1vw, 16px); font-weight:400; color:rgba(255,255,255,.72); line-height:1.55; margin:0; }
+    .cap-ch-body strong { color:#fff; font-weight:600; }
+    .cap-ch-bullets { list-style:none; padding:0; display:flex; flex-direction:column; gap:6px; margin:4px 0 0; }
+    .cap-ch-bullets li { display:flex; align-items:flex-start; gap:10px; font-size:clamp(14px, 1vw, 16px); font-weight:400; color:rgba(255,255,255,.75); line-height:1.45; }
+    .cap-ch-bullets li::before { content:''; width:6px; height:6px; border-radius:50%; background:#ED6845; flex-shrink:0; margin-top:7px; }
+    .cap-ch-bullets li strong { color:#fff; font-weight:600; }
+    .cap-stat { display:inline-flex; align-items:center; gap:14px; background:rgba(237,104,69,.10); border:1px solid rgba(237,104,69,.28); padding:12px 18px; margin-top:8px; width:fit-content; max-width:100%; border-radius:4px; flex-shrink:0; }
+    .cap-stat-n { font-size:30px; font-weight:800; color:#ED6845; line-height:1; flex-shrink:0; }
+    .cap-stat-d { font-size:13.5px; color:rgba(255,255,255,.6); line-height:1.45; }
+    .cap-stat-d strong { color:#fff; font-weight:600; }
+
+    /* Stats grid (en chapter de Permanencia) */
+    .ing-stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+    .ing-stat-item { background:rgba(237,104,69,.08); border:1px solid rgba(237,104,69,.22); padding:12px 16px; display:flex; flex-direction:column; gap:4px; border-radius:4px; }
+    .ing-stat-num { font-size:24px; font-weight:800; color:#ED6845; line-height:1; }
+    .ing-stat-desc { font-size:12px; color:rgba(255,255,255,.55); line-height:1.45; }
+    .ing-stat-desc strong { color:#fff; font-weight:600; }
+
+    /* Fila de botones (Trainingym + Experiencia cliente) */
+    .cap-tool-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .cap-tool-row .cap-tool-btn { margin-top: 0; }
+
+    /* Botón "Ver en Trainingym" dentro del bloque tg */
+    .cap-tool-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--orange) !important;
+      text-decoration: none;
+      border: 1px solid rgba(237,104,69,0.35);
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      align-self: flex-start;
+      width: fit-content;
+      opacity: 0.85;
+    }
+    .cap-tool-btn:hover {
+      background: rgba(237,104,69,0.10);
+      border-color: var(--orange);
+      opacity: 1;
+    }
+    .cap-tool-btn svg { display: block; opacity: 0.8; }
+    /* Si la URL es '#' (placeholder), el botón se muestra desactivado visualmente */
+    .cap-tool-btn[href="#"] {
+      pointer-events: none;
+      opacity: 0.45;
+    }
+    .cap-tool-btn[href="#"]::after {
+      content: '· próximamente';
+      font-size: 9px;
+      letter-spacing: 0.8px;
+      opacity: 0.7;
+      margin-left: 2px;
+      text-transform: lowercase;
+    }
+
+    /* Modal responsive — móvil en una columna */
+    @media (max-width: 880px) {
+      .cap-overlay {
+        padding: 2vh 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .cap-modal {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        max-height: 92vh;
+        max-height: 92dvh;
+      }
+      .cap-mdiv { display: none; }
+      .cap-mleft { padding: 32px 24px 22px; gap: 10px; }
+      .cap-mleft::after {
+        content:''; position:absolute; bottom:0; left:24px; right:24px; height:1px;
+        background:linear-gradient(90deg, transparent, rgba(237,104,69,.3), transparent);
+      }
+      .cap-mghost { font-size: 130px; bottom:-12px; left:-6px; }
+      .cap-mright {
+        padding: 24px 24px 28px;
+        min-height: 0;
+        max-height: 100%;
+      }
+      .cap-chapter { padding: 18px 0; }
+      .cap-chapter.cap-tg { margin:14px -10px -4px; padding:18px 16px; }
+    }
+
+    /* placeholder palanca panels */
+    .palanca-coming { background:var(--surface); border:0.5px dashed var(--border-mid); border-radius:var(--radius-lg); padding:2.5rem; text-align:center; color:var(--text-muted); font-size:13px; font-style:italic; }
+
+    /* ── Demo funcio shared CSS ── */
+    .demo-wrap{font-family:'Host Grotesk',system-ui,sans-serif;background:var(--gris);color:var(--grafito);line-height:1.6;border-radius:var(--radius-lg);overflow:hidden;}
+    .demo-header-block{background:var(--petrol);border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:1.5rem 1.75rem 1.75rem;margin-bottom:1.5rem;}
+    .demo-header-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:.75rem;}
+
+    /* Footer */
+    .footer-bottom {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .footer-bottom a { color: var(--orange); text-decoration: none; }
+
+    /* CTA al final */
+    .cta-section {
+      max-width: 900px;
+      margin: 1rem auto 4rem;
+      padding: 2.5rem 2rem;
+      background: linear-gradient(135deg, rgba(237,104,69,0.10) 0%, rgba(237,104,69,0.03) 100%);
+      border: 1px solid rgba(237,104,69,0.25);
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    /* Scroll hint que invita a bajar al CTA */
+    .scroll-hint {
+      max-width: 1100px;
+      margin: 0.5rem auto 0;
+      padding: 0.6rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .scroll-hint:hover { color: var(--orange); }
+    .scroll-hint-arrow {
+      font-size: 14px;
+      animation: bounce 1.8s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+    .cta-section h2 {
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      margin: 0 0 0.6rem;
+      color: #fff;
+    }
+    .cta-section p {
+      color: rgba(255,255,255,0.65);
+      font-size: 14px;
+      margin: 0 0 1.5rem;
+      line-height: 1.55;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--orange);
+      color: #fff;
+      text-decoration: none;
+      padding: 13px 28px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 14.5px;
+      box-shadow: 0 4px 14px rgba(237,104,69,0.35);
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .cta-btn:hover { box-shadow: 0 6px 18px rgba(237,104,69,0.42); }
+    .cta-btn:active { transform: scale(0.97); }
+
+    /* Mobile fixes */
+    @media (max-width: 760px) {
+      .topbar { padding: 0.7rem 1rem; }
+      .topbar img { height: 32px; }
+      .topbar a { font-size: 11px; }
+      .hero { padding: 1.75rem 1.25rem 1.25rem; }
+      .hero h1 { font-size: clamp(28px, 8vw, 38px); letter-spacing: -1px; }
+      .palancas-row { padding: 0 1rem 2rem; }
+      .palancas-grid { gap: 0.85rem; }
+
+      /* CTA section adaptado a móvil */
+      .cta-section {
+        margin: 0.5rem 1rem 2.5rem;
+        padding: 1.75rem 1.25rem;
+      }
+      .cta-section h2 {
+        font-size: 19px;
+      }
+      .cta-section p {
+        font-size: 13px;
+      }
+      .cta-btn {
+        padding: 12px 22px;
+        font-size: 13.5px;
+        width: 100%;
+        max-width: 320px;
+      }
+    }
+
+    /* ════════════════════════════════════════
+       MOBILE POLISH — pase fino para móvil
+       ════════════════════════════════════════ */
+    html, body { overflow-x: hidden; max-width: 100vw; }
+    @media (min-width: 1101px) { body.home-mode { overflow: hidden; height: 100vh; } }
+    body { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+
+    .topbar {
+      padding-top: max(0.85rem, env(safe-area-inset-top));
+      padding-left: max(1.5rem, env(safe-area-inset-left));
+      padding-right: max(1.5rem, env(safe-area-inset-right));
+    }
+    .footer-bottom { padding-bottom: max(2rem, env(safe-area-inset-bottom)); }
+
+    @media (max-width: 760px) {
+      .palanca-tab { min-height: 44px; display: flex; align-items: center; justify-content: center; }
+      .home-btn { min-height: 32px; }
+      .cap-close { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+      .cap-tool-btn { min-height: 44px; padding: 10px 16px; }
+      .cap-item { min-height: 44px; }
+      .cap-mright, .cap-overlay { -webkit-overflow-scrolling: touch; }
+      .cap-mkicker { max-width: 100%; font-size: 14px; }
+      .cap-ch-title { line-height: 1.35; }
+      .cap-ch-body, .cap-ch-bullets li { font-size: 14px; line-height: 1.55; }
+      .scroll-hint { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+    }
+
+    @media (max-width: 380px) {
+      .topbar img { height: 28px; }
+      .topbar { padding: 0.6rem 0.9rem; }
+      body.home-mode .hero { padding: 1.5rem 1rem 0.75rem; }
+      body.home-mode .hero h1 { font-size: clamp(22px, 6.5vw, 26px); }
+      .palanca-tab { font-size: 11.5px; padding: 0.55rem 0.35rem; }
+      .palancas-row { padding: 0 0.75rem 1.5rem; }
+      .cap-modal { width: 96vw; }
+      .cap-mleft { padding: 24px 18px 18px; }
+      .cap-mright { padding: 18px 18px 24px; }
+      .cap-mghost { font-size: 110px; }
+      .cap-ft { padding: 12px 14px; gap: 4px; }
+      .cap-ft-num { font-size: 15px; }
+    }
+  
+    /* ─── Ecosistema Trainingym (entre tarjetas y cap-ft) ─── */
+    .cap-ecosystem {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 24px;
+      position: relative;
+      z-index: 2;
+    }
+    .cap-eco-svg {
+      width: 100%;
+      max-width: 720px;
+      height: auto;
+    }
+    .cap-eco-svg .eco-line { stroke: rgba(237,104,69,0.45); stroke-width: 1.5; stroke-dasharray: 4 4; fill: none; }
+    .cap-eco-svg .eco-node-bg-center { fill: #ED6845; stroke: #ED6845; }
+    .cap-eco-svg .eco-node-bg { fill: rgba(237,104,69,0.08); stroke: #ED6845; stroke-width: 1.5; }
+    .cap-eco-svg .eco-node-bg-sm { fill: rgba(237,104,69,0.05); stroke: rgba(237,104,69,0.7); stroke-width: 1.2; }
+    .cap-eco-svg .eco-icon { fill: none; stroke: #ED6845; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .cap-eco-svg .eco-icon-center { fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .cap-eco-svg .eco-label { font-family: 'Host Grotesk', system-ui, sans-serif; font-weight: 700; fill: #fff; }
+    .cap-eco-svg .eco-label-sm { font-family: 'Host Grotesk', system-ui, sans-serif; font-weight: 600; fill: rgba(255,255,255,0.85); }
+    .cap-eco-svg .eco-tag { font-family: 'Host Grotesk', system-ui, sans-serif; font-weight: 700; fill: #ED6845; letter-spacing: 1.8px; }
+    .cap-eco-svg .eco-label-gris {
+      font-family: 'Host Grotesk', system-ui, sans-serif;
+      font-weight: 600;
+      fill: rgba(242,243,247,0.85);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 760px) {
+      .cap-ecosystem { padding: 24px 12px 16px; }
+    }
+
+  
+    /* En modo zoom: empuja cap-ft al fondo de la palanca */
+    @media (min-width: 1101px) {
+      body:not(.home-mode) .palanca-col.active .cap-embed { display: flex; flex-direction: column; height: 100%; }
+      body:not(.home-mode) .palanca-col.active .cap-embed-inner { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+      body:not(.home-mode) .palanca-col.active .cap-tl-wrap { flex: 0 0 auto; }
+      body:not(.home-mode) .palanca-col.active .cap-ecosystem { flex: 1; min-height: 0; }
+      body:not(.home-mode) .palanca-col.active .cap-eco-svg { max-height: 100%; }
+      body:not(.home-mode) .palanca-col.active .cap-ft { margin-top: auto; }
+    }
+
+  
+    /* En modo zoom: solo muestra el nombre de la palanca activa */
+    body:not(.home-mode) .palanca-tab:not(.on) .palanca-tab-name {
+      visibility: hidden;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    body:not(.home-mode) .palanca-tab.on .palanca-tab-name {
+      color: var(--gris);
+      font-size: 19px;
+    }
+    /* Tabs no activos: solo punto, sin nombre — reducimos su padding */
+    body:not(.home-mode) .palanca-tab:not(.on) {
+      padding-bottom: 4px;
+    }
+
+  
+  
+    /* Iconos del ecosistema clicables */
+    .cap-eco-svg .eco-link { cursor: pointer; transition: opacity 0.2s ease; }
+    .cap-eco-svg .eco-link:hover { opacity: 0.85; }
+    .cap-eco-svg .eco-link:hover g { filter: drop-shadow(0 0 12px rgba(237,104,69,0.45)); }
+
+    /* ─── Botones topbar derecha ─── */
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .topbar-icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.75);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      padding: 0;
+      text-decoration: none;
+    }
+    .topbar-icon-btn:hover {
+      background: rgba(237,104,69,0.10);
+      border-color: rgba(237,104,69,0.55);
+      color: var(--orange);
+      transform: translateY(-1px);
+    }
+    .topbar-icon-btn svg { display: block; }
+    .topbar-icon-btn img { display: block; height: 22px; width: auto; }
+    .topbar-icon-btn:hover svg path { stroke: #ED6845; transition: stroke 0.15s ease; }
+    .topbar-icon-btn:hover svg circle { fill: #ED6845; transition: fill 0.15s ease; }
+    .topbar-icon-btn svg text { fill: rgba(255,255,255,0.75); transition: fill 0.15s ease; }
+    .topbar-icon-btn:hover svg text { fill: #ED6845; }
+
+
+    /* ─── Modal QR ─── */
+    .qr-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(10,10,8,0.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .qr-overlay.open { opacity: 1; pointer-events: all; }
+    .qr-modal {
+      background: #1D1D1B;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 48px 56px;
+      max-width: 560px;
+      width: 90vw;
+      text-align: center;
+      transform: scale(0.95);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+      position: relative;
+      font-family: 'Host Grotesk', system-ui, sans-serif;
+    }
+    .qr-overlay.open .qr-modal { transform: scale(1); }
+    .qr-modal::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--orange);
+      border-radius: 16px 16px 0 0;
+    }
+    .qr-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      color: rgba(255,255,255,0.6);
+      border-radius: 50%;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .qr-close:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+    .qr-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--orange);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin: 8px 0 14px;
+    }
+    .qr-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+      margin: 0 0 26px;
+    }
+    .qr-img-wrap {
+      background: #fff;
+      padding: 18px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-bottom: 22px;
+    }
+    .qr-img-wrap img {
+      display: block;
+      width: 320px;
+      height: 320px;
+      max-width: 100%;
+    }
+    .qr-hint {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      margin: 0 0 16px;
+      font-weight: 500;
+    }
+    .qr-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--orange);
+      color: #fff;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: 1px solid var(--orange);
+      box-shadow: 0 4px 18px rgba(237,104,69,0.35);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      margin-top: 4px;
+    }
+    .qr-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(237,104,69,0.5);
+      background: #d85a3a;
+    }
+    .qr-link:active { transform: translateY(0); }
+
+    @media (max-width: 600px) {
+      .qr-modal { padding: 36px 28px; }
+      .qr-title { font-size: 22px; }
+      .qr-img-wrap img { width: 260px; height: 260px; }
+    }
+
+  </style>
+</head>
+<body class="home-mode">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="https://trainingym.com/hs-fs/hubfs/Logo-Blanco-Trainingym.png" alt="Trainingym">
+      <button class="home-btn" onclick="goHome()" aria-label="Volver al inicio" title="Volver al inicio">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12L12 3l9 9"/>
+          <path d="M5 10v10h5v-6h4v6h5V10"/>
+        </svg>
+        <span>Inicio</span>
+      </button>
+    </div>
+    <div class="topbar-right">
+      <a class="topbar-icon-btn" href="https://mirkotrain.github.io/wizard_tarifas_supersonik/?step=clientes" target="_blank" rel="noopener" aria-label="Configurar tarifas" title="Configurar tarifas">
+        <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+          <text x="12" y="19" text-anchor="middle" font-size="20" font-weight="800" fill="currentColor" font-family="Host Grotesk, system-ui, sans-serif">$</text>
+        </svg>
+      </a>
+      <button class="topbar-icon-btn" onclick="openQrModal('reunion')" aria-label="Reservar reunión con experto" title="Reservar reunión con experto">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </button>
+      <button class="topbar-icon-btn" onclick="openQrModal('cotizacion')" aria-label="Bloquea tu cotización con 10% de descuento" title="Bloquea tu cotización con 10% de descuento">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="8" y1="13" x2="16" y2="13"/>
+          <line x1="8" y1="17" x2="14" y2="17"/>
+        </svg>
+      </button>
+      <button class="topbar-icon-btn" onclick="openQrModal('licencia')" aria-label="Crear licencia gratuita de Trainingym" title="Crear licencia gratuita de Trainingym">
+        <svg viewBox="0 0 100 100" width="22" height="22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Imagotipo Trainingym: anillo grueso abierto + punto -->
+          <path d="M 32 13 A 40 40 0 1 1 13 64" fill="none" stroke="#ED6845" stroke-width="18" stroke-linecap="round"/>
+          <circle cx="22" cy="23" r="6.5" fill="#ED6845"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Sección metodología — ocupa pantalla completa en desktop -->
+  <section class="methodology-section">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Metodología <strong>Trainingym</strong></h1>
+  </div>
+
+  <!-- Tabs de selección de palanca -->
+  <div class="palanca-tabs">
+    <button class="palanca-tab" data-palanca="cap" onclick="zoomPalanca('cap')">
+      <span class="palanca-tab-name">Captación</span>
+    </button>
+    <button class="palanca-tab" data-palanca="tiem" onclick="zoomPalanca('tiem')">
+      <span class="palanca-tab-name">Ahorro de tiempo</span>
+    </button>
+    <button class="palanca-tab" data-palanca="fid" onclick="zoomPalanca('fid')">
+      <span class="palanca-tab-name">Fidelización</span>
+    </button>
+    <button class="palanca-tab" data-palanca="ing" onclick="zoomPalanca('ing')">
+      <span class="palanca-tab-name">Ingresos</span>
+    </button>
+  </div>
+
+  <!-- Las 4 palancas en grid lineal -->
+  <div class="palancas-row">
+    <div class="palancas-grid" id="palancas-grid">
+
+      <!-- ── PALANCA 1: CAPTACIÓN ── -->
+      <div class="palanca-col" id="pal-cap" data-name="Captación" onclick="onPalancaClick('cap', event)">
+
+        <div class="palanca-head">
+          <span class="palanca-head-name">Captación</span>
+        </div>
+        <div class="palanca-mini-stat">+10% Crecimiento neto</div>
+        <div class="palanca-body">
+          <div class="cap-embed">
+            <div class="cap-embed-inner">
+              <div class="cap-tl-wrap">
+                <div class="cap-h-line"><div class="cap-dot-2"></div><div class="cap-dot-3"></div></div>
+                <div class="cap-timeline">
+                  <div class="cap-item">
+                    <p class="cap-kicker">8 de 10 inscripciones vienen de tu <span class="cap-hl">posicionamiento</span>.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Antes de entrar por tu puerta, te buscan.</p>
+                    <p class="cap-desc">El posicionamiento es la nueva ubicación. Estar donde te buscan — antes que la competencia.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                  <div class="cap-item">
+                    <p class="cap-kicker">Tu <span class="cap-hl">presencia</span> lo es todo.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Tu marca vende incluso cuando tú descansas.</p>
+                    <p class="cap-desc">Redes sociales y web propia que transforman seguidores en pruebas — y pruebas en altas.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                  <div class="cap-item">
+                    <p class="cap-kicker">Los <span class="cap-hl">referidos</span> son la clave.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Tu mejor comercial ya es tu cliente.</p>
+                    <p class="cap-desc">La recomendación de alguien de confianza vale más que cualquier anuncio.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                  <div class="cap-item">
+                    <p class="cap-kicker"><span class="cap-hl">Comunicación</span> efectiva.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">El mensaje correcto, en el momento exacto.</p>
+                    <p class="cap-desc">Hablarle a la persona adecuada, por el canal que usa, con lo que necesita escuchar.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="cap-ecosystem">
+                <svg class="cap-eco-svg" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#252523"/>
+                      <stop offset="100%" stop-color="#1a1a18"/>
+                    </linearGradient>
+                    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#ED6845"/>
+                      <stop offset="100%" stop-color="#c44d2e"/>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Líneas punteadas conectando satélites al centro -->
+                  <line class="eco-line" x1="490" y1="170" x2="240" y2="170"/>
+                  <line class="eco-line" x1="585" y1="140" x2="745" y2="100"/>
+                  <line class="eco-line" x1="585" y1="200" x2="745" y2="240"/>
+
+                  <!-- ╔══ CENTRO: MAC LAPTOP CON DASHBOARD ══╗ -->
+                  <a href="https://app.tgmanager.com/auth" target="_blank" rel="noopener" class="eco-link">
+                  <g transform="translate(490 160) scale(0.8)">
+                    <rect x="-130" y="-90" width="260" height="160" rx="10" fill="#0e0e0c" stroke="#3a3a36" stroke-width="1.5"/>
+                    <rect x="-122" y="-82" width="244" height="144" rx="4" fill="url(#screenGrad)"/>
+                    <rect x="-122" y="-82" width="244" height="18" rx="4" fill="#2a2a27"/>
+                    <circle cx="-110" cy="-73" r="3" fill="#ED6845"/>
+                    <circle cx="-100" cy="-73" r="3" fill="#444"/>
+                    <circle cx="-90" cy="-73" r="3" fill="#444"/>
+                    <rect x="-72" y="-80" width="80" height="14" rx="3" fill="#0e0e0c"/>
+                    <text x="-32" y="-70" text-anchor="middle" font-size="7" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.6)" font-weight="600">Trainingym</text>
+                    <rect x="-122" y="-64" width="50" height="126" fill="#1f1f1d"/>
+                    <rect x="-115" y="-55" width="36" height="4" rx="2" fill="#ED6845"/>
+                    <rect x="-115" y="-45" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-37" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-29" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-21" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-13" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-66" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="-38" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">+30%</text>
+                    <text x="-38" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">INGRESOS</text>
+                    <rect x="-2" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="26" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">+40%</text>
+                    <text x="26" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">CLIENTES</text>
+                    <rect x="62" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="90" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">x6</text>
+                    <text x="90" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">LTV</text>
+                    <rect x="-66" y="-18" width="184" height="74" rx="3" fill="#1a1a18" stroke="rgba(255,255,255,0.06)" stroke-width="0.8"/>
+                    <text x="-58" y="-8" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.4)" letter-spacing="1" font-weight="600">CRECIMIENTO</text>
+                    <rect x="-58" y="20" width="10" height="30" rx="1" fill="rgba(237,104,69,0.4)"/>
+                    <rect x="-42" y="14" width="10" height="36" rx="1" fill="rgba(237,104,69,0.55)"/>
+                    <rect x="-26" y="8" width="10" height="42" rx="1" fill="rgba(237,104,69,0.7)"/>
+                    <rect x="-10" y="2" width="10" height="48" rx="1" fill="rgba(237,104,69,0.85)"/>
+                    <rect x="6" y="-2" width="10" height="52" rx="1" fill="#ED6845"/>
+                    <rect x="22" y="-6" width="10" height="56" rx="1" fill="#ED6845"/>
+                    <rect x="38" y="-10" width="10" height="60" rx="1" fill="#ED6845"/>
+                    <polyline points="-53,28 -37,22 -21,16 -5,10 11,6 27,2 43,-2" fill="none" stroke="#ED6845" stroke-width="1.2" stroke-linecap="round"/>
+                    <path d="M -150 70 L 150 70 L 145 80 L -145 80 Z" fill="#2a2a27" stroke="#3a3a36" stroke-width="1"/>
+                    <ellipse cx="0" cy="80" rx="14" ry="1.5" fill="#1a1a18"/>
+                  </g>
+                  </a>
+                  <text class="eco-label-gris" x="490" y="240" text-anchor="middle" font-size="13">SOFTWARE ALL IN ONE</text>
+
+                  <!-- ╔══ APP MÓVIL GRANDE (izquierda) ══╗ -->
+                  <a href="https://mirkotrain.github.io/navegaci-n-app/#hoy" target="_blank" rel="noopener" class="eco-link">
+                  <g transform="translate(170 160) scale(0.8)">
+                    <rect x="-50" y="-95" width="100" height="180" rx="14" fill="#0e0e0c" stroke="#3a3a36" stroke-width="2"/>
+                    <rect x="-44" y="-89" width="88" height="168" rx="8" fill="#1a1a18"/>
+                    <rect x="-13" y="-89" width="26" height="6" rx="3" fill="#0e0e0c"/>
+                    <text x="-32" y="-75" font-size="6" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.8)" font-weight="700">9:41</text>
+                    <rect x="28" y="-78" width="10" height="4" rx="1" fill="rgba(255,255,255,0.6)"/>
+                    <circle cx="-32" cy="-62" r="6" fill="#ED6845"/>
+                    <rect x="-22" y="-65" width="42" height="3.5" rx="1.5" fill="rgba(255,255,255,0.75)"/>
+                    <rect x="-22" y="-59" width="28" height="2.5" rx="1.25" fill="rgba(255,255,255,0.4)"/>
+                    <rect x="-38" y="-50" width="76" height="34" rx="4" fill="rgba(237,104,69,0.2)" stroke="rgba(237,104,69,0.4)" stroke-width="0.8"/>
+                    <rect x="-32" y="-44" width="44" height="3" rx="1.5" fill="rgba(255,255,255,0.85)"/>
+                    <rect x="-32" y="-39" width="34" height="2.5" rx="1.25" fill="rgba(255,255,255,0.5)"/>
+                    <rect x="-32" y="-34" width="20" height="3" rx="1.5" fill="#ED6845"/>
+                    <text x="22" y="-24" font-size="5" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="700">→</text>
+                    <rect x="-38" y="-12" width="76" height="26" rx="4" fill="#23231e" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+                    <rect x="-32" y="-6" width="34" height="3" rx="1.5" fill="rgba(255,255,255,0.7)"/>
+                    <rect x="-32" y="-1" width="26" height="2.5" rx="1.25" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="28" cy="0" r="4" fill="#ED6845"/>
+                    <text x="28" y="2" font-size="5" text-anchor="middle" font-family="Host Grotesk,sans-serif" fill="#fff" font-weight="800">+</text>
+                    <rect x="-38" y="18" width="76" height="26" rx="4" fill="#23231e" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+                    <circle cx="-30" cy="31" r="4" fill="#ED6845"/>
+                    <rect x="-22" y="25" width="36" height="3" rx="1.5" fill="rgba(255,255,255,0.6)"/>
+                    <rect x="-22" y="30" width="26" height="2.5" rx="1.25" fill="rgba(255,255,255,0.35)"/>
+                    <rect x="-22" y="35" width="14" height="2.5" rx="1.25" fill="rgba(255,255,255,0.25)"/>
+                    <rect x="-44" y="56" width="88" height="20" fill="#0e0e0c"/>
+                    <circle cx="-22" cy="66" r="2.5" fill="#ED6845"/>
+                    <circle cx="-7" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="8" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="23" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <rect x="-18" y="78" width="36" height="2" rx="1" fill="rgba(255,255,255,0.4)"/>
+                  </g>
+                  </a>
+                  <text class="eco-label-gris" x="170" y="250" text-anchor="middle" font-size="13">EXPERIENCIA CLIENTE</text>
+
+                  <!-- ╔══ TORNO DE ACCESO (derecha arriba) ══╗ -->
+                  <g transform="translate(770 95) scale(0.85)">
+                    <rect x="-18" y="-58" width="36" height="92" rx="5" fill="#23231e" stroke="rgba(237,104,69,0.55)" stroke-width="1.6"/>
+                    <circle cx="0" cy="-44" r="5" fill="#ED6845">
+                      <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <rect x="-12" y="-32" width="24" height="16" rx="2" fill="#0e0e0c" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+                    <path d="M -5 -25 L -2 -22 L 5 -28" stroke="#ED6845" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="0" y="-10" text-anchor="middle" font-size="3.5" font-family="Host Grotesk,sans-serif" fill="rgba(237,104,69,0.85)" font-weight="700" letter-spacing="0.4">ACCESO</text>
+                    <rect x="-9" y="-4" width="18" height="18" rx="2" fill="#1a1a18" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+                    <rect x="-6" y="-1" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="3" y="-1" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="-6" y="8" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="-1.5" y="3.5" width="3" height="3" fill="rgba(237,104,69,0.8)"/>
+                    <rect x="3" y="8" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="18" y="8" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="18" y="14" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-50" y="8" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-50" y="14" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-26" y="34" width="52" height="5" rx="1.5" fill="#3a3a36"/>
+                  </g>
+                  <text class="eco-label-gris" x="770" y="160" text-anchor="middle" font-size="12">CONTROL DE ACCESO</text>
+
+                  <!-- ╔══ TARJETA DE CRÉDITO (derecha abajo, junto al torno) ══╗ -->
+                  <g transform="translate(770 245) scale(0.85)">
+                    <rect x="-58" y="-30" width="116" height="70" rx="8" fill="url(#cardGrad)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <path d="M -58 -30 L 58 -30 L 58 -10 Z" fill="rgba(255,255,255,0.08)"/>
+                    <rect x="-46" y="-12" width="18" height="14" rx="2" fill="#d4af37" opacity="0.85"/>
+                    <line x1="-42" y1="-8" x2="-30" y2="-8" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <line x1="-42" y1="-4" x2="-30" y2="-4" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <line x1="-42" y1="0" x2="-30" y2="0" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <g transform="translate(-10 -3)" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round">
+                      <path d="M 0 -5 Q 3 0 0 5"/>
+                      <path d="M 4 -7 Q 8 0 4 7"/>
+                      <path d="M 8 -9 Q 13 0 8 9"/>
+                    </g>
+                    <text x="-44" y="20" font-size="7" font-family="monospace" fill="#fff" font-weight="700" letter-spacing="1.5">**** **** **** 8845</text>
+                    <text x="-44" y="32" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.85)" font-weight="700" letter-spacing="0.5">trainingym</text>
+                    <text x="36" y="32" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.6)" letter-spacing="1.5" font-weight="600">PAY</text>
+                  </g>
+                  <text class="eco-label-gris" x="770" y="295" text-anchor="middle" font-size="12">CONTROL DE PAGOS</text>
+                </svg>
+              </div>
+              <div class="cap-ft">
+                <span class="cap-ft-label">Posiciona</span>
+                <span class="cap-ft-arrow">──▶</span>
+                <span class="cap-ft-label">Muestra</span>
+                <span class="cap-ft-arrow">──▶</span>
+                <span class="cap-ft-label">Activa referidos</span>
+                <span class="cap-ft-arrow">──▶</span>
+                <span class="cap-ft-label">Comunica</span>
+                <span class="cap-ft-eq">=</span>
+                <div class="cap-ft-goal">
+                  <span class="cap-ft-num">+10%</span>
+                  <span class="cap-ft-desc">Crecimiento<br>neto</span>
+                </div>
+              </div>
+              <div class="palanca-zoom-hint">↗ Click para ver</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PALANCA 2: AHORRO DE TIEMPO ── -->
+      <div class="palanca-col" id="pal-tiem" data-name="Ahorro de tiempo" onclick="onPalancaClick('tiem', event)">
+
+        <div class="palanca-head">
+          <span class="palanca-head-name">Ahorro de tiempo</span>
+        </div>
+        <div class="palanca-mini-stat">Recursos optimizados</div>
+        <div class="palanca-body">
+          <div class="cap-embed">
+            <div class="cap-embed-inner">
+              <div class="cap-tl-wrap">
+                <div class="cap-h-line"><div class="cap-dot-2"></div><div class="cap-dot-3"></div></div>
+                <div class="cap-timeline">
+                  <div class="cap-item">
+                    <p class="cap-kicker"><span class="cap-hl">Cobrar</span> de forma automática.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Cuotas, tarifas y pagos recurrentes sin gestión manual.</p>
+                    <p class="cap-desc">Domiciliación recurrente en tarjeta — el estándar que maximiza retención.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                  <div class="cap-item">
+                    <p class="cap-kicker">La <span class="cap-hl">recepción</span> sin colapsos.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Altas, autoservicio y control financiero en piloto automático.</p>
+                    <p class="cap-desc">Que el cliente se gestione solo — tú solo supervisas.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                  <div class="cap-item">
+                    <p class="cap-kicker"><span class="cap-hl">Acceso</span> conectado al CRM.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Control de acceso conectado al pago — cero entradas sin cobrar.</p>
+                    <p class="cap-desc">La barrera filtra a quien no está al día — sin intervención humana.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                  <div class="cap-item">
+                    <p class="cap-kicker"><span class="cap-hl">Automatizar</span> el seguimiento.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">El seguimiento que fideliza — hecho solo, sin que nadie lo recuerde.</p>
+                    <p class="cap-desc">Notificaciones, reservas, encuestas NPS y avisos funcionando solos.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="cap-ecosystem">
+                <svg class="cap-eco-svg" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#252523"/>
+                      <stop offset="100%" stop-color="#1a1a18"/>
+                    </linearGradient>
+                    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#ED6845"/>
+                      <stop offset="100%" stop-color="#c44d2e"/>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Líneas punteadas conectando satélites al centro -->
+                  <line class="eco-line" x1="490" y1="170" x2="240" y2="170"/>
+                  <line class="eco-line" x1="585" y1="140" x2="745" y2="100"/>
+                  <line class="eco-line" x1="585" y1="200" x2="745" y2="240"/>
+
+                  <!-- ╔══ CENTRO: MAC LAPTOP CON DASHBOARD ══╗ -->
+                  <a href="https://app.tgmanager.com/auth" target="_blank" rel="noopener" class="eco-link">
+                  <g transform="translate(490 160) scale(0.8)">
+                    <rect x="-130" y="-90" width="260" height="160" rx="10" fill="#0e0e0c" stroke="#3a3a36" stroke-width="1.5"/>
+                    <rect x="-122" y="-82" width="244" height="144" rx="4" fill="url(#screenGrad)"/>
+                    <rect x="-122" y="-82" width="244" height="18" rx="4" fill="#2a2a27"/>
+                    <circle cx="-110" cy="-73" r="3" fill="#ED6845"/>
+                    <circle cx="-100" cy="-73" r="3" fill="#444"/>
+                    <circle cx="-90" cy="-73" r="3" fill="#444"/>
+                    <rect x="-72" y="-80" width="80" height="14" rx="3" fill="#0e0e0c"/>
+                    <text x="-32" y="-70" text-anchor="middle" font-size="7" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.6)" font-weight="600">Trainingym</text>
+                    <rect x="-122" y="-64" width="50" height="126" fill="#1f1f1d"/>
+                    <rect x="-115" y="-55" width="36" height="4" rx="2" fill="#ED6845"/>
+                    <rect x="-115" y="-45" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-37" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-29" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-21" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-13" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-66" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="-38" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">+30%</text>
+                    <text x="-38" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">INGRESOS</text>
+                    <rect x="-2" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="26" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">+40%</text>
+                    <text x="26" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">CLIENTES</text>
+                    <rect x="62" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="90" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">x6</text>
+                    <text x="90" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">LTV</text>
+                    <rect x="-66" y="-18" width="184" height="74" rx="3" fill="#1a1a18" stroke="rgba(255,255,255,0.06)" stroke-width="0.8"/>
+                    <text x="-58" y="-8" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.4)" letter-spacing="1" font-weight="600">CRECIMIENTO</text>
+                    <rect x="-58" y="20" width="10" height="30" rx="1" fill="rgba(237,104,69,0.4)"/>
+                    <rect x="-42" y="14" width="10" height="36" rx="1" fill="rgba(237,104,69,0.55)"/>
+                    <rect x="-26" y="8" width="10" height="42" rx="1" fill="rgba(237,104,69,0.7)"/>
+                    <rect x="-10" y="2" width="10" height="48" rx="1" fill="rgba(237,104,69,0.85)"/>
+                    <rect x="6" y="-2" width="10" height="52" rx="1" fill="#ED6845"/>
+                    <rect x="22" y="-6" width="10" height="56" rx="1" fill="#ED6845"/>
+                    <rect x="38" y="-10" width="10" height="60" rx="1" fill="#ED6845"/>
+                    <polyline points="-53,28 -37,22 -21,16 -5,10 11,6 27,2 43,-2" fill="none" stroke="#ED6845" stroke-width="1.2" stroke-linecap="round"/>
+                    <path d="M -150 70 L 150 70 L 145 80 L -145 80 Z" fill="#2a2a27" stroke="#3a3a36" stroke-width="1"/>
+                    <ellipse cx="0" cy="80" rx="14" ry="1.5" fill="#1a1a18"/>
+                  </g>
+                  </a>
+                  <text class="eco-label-gris" x="490" y="240" text-anchor="middle" font-size="13">SOFTWARE ALL IN ONE</text>
+
+                  <!-- ╔══ APP MÓVIL GRANDE (izquierda) ══╗ -->
+                  <a href="https://mirkotrain.github.io/navegaci-n-app/#hoy" target="_blank" rel="noopener" class="eco-link">
+                  <g transform="translate(170 160) scale(0.8)">
+                    <rect x="-50" y="-95" width="100" height="180" rx="14" fill="#0e0e0c" stroke="#3a3a36" stroke-width="2"/>
+                    <rect x="-44" y="-89" width="88" height="168" rx="8" fill="#1a1a18"/>
+                    <rect x="-13" y="-89" width="26" height="6" rx="3" fill="#0e0e0c"/>
+                    <text x="-32" y="-75" font-size="6" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.8)" font-weight="700">9:41</text>
+                    <rect x="28" y="-78" width="10" height="4" rx="1" fill="rgba(255,255,255,0.6)"/>
+                    <circle cx="-32" cy="-62" r="6" fill="#ED6845"/>
+                    <rect x="-22" y="-65" width="42" height="3.5" rx="1.5" fill="rgba(255,255,255,0.75)"/>
+                    <rect x="-22" y="-59" width="28" height="2.5" rx="1.25" fill="rgba(255,255,255,0.4)"/>
+                    <rect x="-38" y="-50" width="76" height="34" rx="4" fill="rgba(237,104,69,0.2)" stroke="rgba(237,104,69,0.4)" stroke-width="0.8"/>
+                    <rect x="-32" y="-44" width="44" height="3" rx="1.5" fill="rgba(255,255,255,0.85)"/>
+                    <rect x="-32" y="-39" width="34" height="2.5" rx="1.25" fill="rgba(255,255,255,0.5)"/>
+                    <rect x="-32" y="-34" width="20" height="3" rx="1.5" fill="#ED6845"/>
+                    <text x="22" y="-24" font-size="5" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="700">→</text>
+                    <rect x="-38" y="-12" width="76" height="26" rx="4" fill="#23231e" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+                    <rect x="-32" y="-6" width="34" height="3" rx="1.5" fill="rgba(255,255,255,0.7)"/>
+                    <rect x="-32" y="-1" width="26" height="2.5" rx="1.25" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="28" cy="0" r="4" fill="#ED6845"/>
+                    <text x="28" y="2" font-size="5" text-anchor="middle" font-family="Host Grotesk,sans-serif" fill="#fff" font-weight="800">+</text>
+                    <rect x="-38" y="18" width="76" height="26" rx="4" fill="#23231e" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+                    <circle cx="-30" cy="31" r="4" fill="#ED6845"/>
+                    <rect x="-22" y="25" width="36" height="3" rx="1.5" fill="rgba(255,255,255,0.6)"/>
+                    <rect x="-22" y="30" width="26" height="2.5" rx="1.25" fill="rgba(255,255,255,0.35)"/>
+                    <rect x="-22" y="35" width="14" height="2.5" rx="1.25" fill="rgba(255,255,255,0.25)"/>
+                    <rect x="-44" y="56" width="88" height="20" fill="#0e0e0c"/>
+                    <circle cx="-22" cy="66" r="2.5" fill="#ED6845"/>
+                    <circle cx="-7" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="8" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="23" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <rect x="-18" y="78" width="36" height="2" rx="1" fill="rgba(255,255,255,0.4)"/>
+                  </g>
+                  </a>
+                  <text class="eco-label-gris" x="170" y="250" text-anchor="middle" font-size="13">EXPERIENCIA CLIENTE</text>
+
+                  <!-- ╔══ TORNO DE ACCESO (derecha arriba) ══╗ -->
+                  <g transform="translate(770 95) scale(0.85)">
+                    <rect x="-18" y="-58" width="36" height="92" rx="5" fill="#23231e" stroke="rgba(237,104,69,0.55)" stroke-width="1.6"/>
+                    <circle cx="0" cy="-44" r="5" fill="#ED6845">
+                      <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <rect x="-12" y="-32" width="24" height="16" rx="2" fill="#0e0e0c" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+                    <path d="M -5 -25 L -2 -22 L 5 -28" stroke="#ED6845" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="0" y="-10" text-anchor="middle" font-size="3.5" font-family="Host Grotesk,sans-serif" fill="rgba(237,104,69,0.85)" font-weight="700" letter-spacing="0.4">ACCESO</text>
+                    <rect x="-9" y="-4" width="18" height="18" rx="2" fill="#1a1a18" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+                    <rect x="-6" y="-1" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="3" y="-1" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="-6" y="8" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="-1.5" y="3.5" width="3" height="3" fill="rgba(237,104,69,0.8)"/>
+                    <rect x="3" y="8" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="18" y="8" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="18" y="14" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-50" y="8" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-50" y="14" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-26" y="34" width="52" height="5" rx="1.5" fill="#3a3a36"/>
+                  </g>
+                  <text class="eco-label-gris" x="770" y="160" text-anchor="middle" font-size="12">CONTROL DE ACCESO</text>
+
+                  <!-- ╔══ TARJETA DE CRÉDITO (derecha abajo, junto al torno) ══╗ -->
+                  <g transform="translate(770 245) scale(0.85)">
+                    <rect x="-58" y="-30" width="116" height="70" rx="8" fill="url(#cardGrad)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <path d="M -58 -30 L 58 -30 L 58 -10 Z" fill="rgba(255,255,255,0.08)"/>
+                    <rect x="-46" y="-12" width="18" height="14" rx="2" fill="#d4af37" opacity="0.85"/>
+                    <line x1="-42" y1="-8" x2="-30" y2="-8" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <line x1="-42" y1="-4" x2="-30" y2="-4" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <line x1="-42" y1="0" x2="-30" y2="0" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <g transform="translate(-10 -3)" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round">
+                      <path d="M 0 -5 Q 3 0 0 5"/>
+                      <path d="M 4 -7 Q 8 0 4 7"/>
+                      <path d="M 8 -9 Q 13 0 8 9"/>
+                    </g>
+                    <text x="-44" y="20" font-size="7" font-family="monospace" fill="#fff" font-weight="700" letter-spacing="1.5">**** **** **** 8845</text>
+                    <text x="-44" y="32" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.85)" font-weight="700" letter-spacing="0.5">trainingym</text>
+                    <text x="36" y="32" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.6)" letter-spacing="1.5" font-weight="600">PAY</text>
+                  </g>
+                  <text class="eco-label-gris" x="770" y="295" text-anchor="middle" font-size="12">CONTROL DE PAGOS</text>
+                </svg>
+              </div>
+              <div class="cap-ft">
+                <span class="cap-ft-label">Cobros</span>
+                <span class="cap-ft-arrow">──▶</span>
+                <span class="cap-ft-label">Recepción</span>
+                <span class="cap-ft-arrow">──▶</span>
+                <span class="cap-ft-label">Acceso</span>
+                <span class="cap-ft-arrow">──▶</span>
+                <span class="cap-ft-label">Automatización</span>
+                <span class="cap-ft-eq">=</span>
+                <div class="cap-ft-goal">
+                  <span class="cap-ft-num" style="font-size:14px">Equipo</span>
+                  <span class="cap-ft-desc">enfocado en<br>experiencia</span>
+                </div>
+              </div>
+              <div class="palanca-zoom-hint">↗ Click para ver</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PALANCA 3: FIDELIZACIÓN ── -->
+      <div class="palanca-col" id="pal-fid" data-name="Fidelización" onclick="onPalancaClick('fid', event)">
+
+        <div class="palanca-head">
+          <span class="palanca-head-name">Fidelización</span>
+        </div>
+        <div class="palanca-mini-stat">+30% ingresos · +4 meses LTV</div>
+        <div class="palanca-body">
+          <div class="cap-embed">
+            <div class="cap-embed-inner">
+              <div class="cap-tl-wrap">
+                <div class="cap-h-line"><div class="cap-dot-2"></div></div>
+                <div class="cap-timeline">
+                  <div class="cap-item">
+                    <p class="cap-kicker">La <span class="cap-hl">bienvenida</span> es tu mayor oportunidad.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Proceso de bienvenida inicial — detecta el riesgo antes de que sea tarde.</p>
+                    <p class="cap-desc">Identifica desde el primer día si el cliente formará el hábito o lo perderás.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                  <div class="cap-item">
+                    <p class="cap-kicker">Sin <span class="cap-hl">seguimiento</span>, se va sin avisar.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Análisis, prescripción y nutrición — personalizados y renovados en el tiempo.</p>
+                    <p class="cap-desc">La experiencia del cliente diseñada desde la primera cita con el entrenador.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                  <div class="cap-item">
+                    <p class="cap-kicker">La <span class="cap-hl">comunidad</span> multiplica la vida media x6.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Gamificación y comunidad — el cliente que pertenece no se va.</p>
+                    <p class="cap-desc">Puntos, premios y Gymder — conecta a tus clientes entre sí y con tu marca.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="cap-ecosystem">
+                <svg class="cap-eco-svg" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#252523"/>
+                      <stop offset="100%" stop-color="#1a1a18"/>
+                    </linearGradient>
+                    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#ED6845"/>
+                      <stop offset="100%" stop-color="#c44d2e"/>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Líneas punteadas conectando satélites al centro -->
+                  <line class="eco-line" x1="490" y1="170" x2="240" y2="170"/>
+                  <line class="eco-line" x1="585" y1="140" x2="745" y2="100"/>
+                  <line class="eco-line" x1="585" y1="200" x2="745" y2="240"/>
+
+                  <!-- ╔══ CENTRO: MAC LAPTOP CON DASHBOARD ══╗ -->
+                  <a href="https://app.tgmanager.com/auth" target="_blank" rel="noopener" class="eco-link">
+                  <g transform="translate(490 160) scale(0.8)">
+                    <rect x="-130" y="-90" width="260" height="160" rx="10" fill="#0e0e0c" stroke="#3a3a36" stroke-width="1.5"/>
+                    <rect x="-122" y="-82" width="244" height="144" rx="4" fill="url(#screenGrad)"/>
+                    <rect x="-122" y="-82" width="244" height="18" rx="4" fill="#2a2a27"/>
+                    <circle cx="-110" cy="-73" r="3" fill="#ED6845"/>
+                    <circle cx="-100" cy="-73" r="3" fill="#444"/>
+                    <circle cx="-90" cy="-73" r="3" fill="#444"/>
+                    <rect x="-72" y="-80" width="80" height="14" rx="3" fill="#0e0e0c"/>
+                    <text x="-32" y="-70" text-anchor="middle" font-size="7" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.6)" font-weight="600">Trainingym</text>
+                    <rect x="-122" y="-64" width="50" height="126" fill="#1f1f1d"/>
+                    <rect x="-115" y="-55" width="36" height="4" rx="2" fill="#ED6845"/>
+                    <rect x="-115" y="-45" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-37" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-29" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-21" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-13" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-66" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="-38" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">+30%</text>
+                    <text x="-38" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">INGRESOS</text>
+                    <rect x="-2" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="26" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">+40%</text>
+                    <text x="26" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">CLIENTES</text>
+                    <rect x="62" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="90" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">x6</text>
+                    <text x="90" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">LTV</text>
+                    <rect x="-66" y="-18" width="184" height="74" rx="3" fill="#1a1a18" stroke="rgba(255,255,255,0.06)" stroke-width="0.8"/>
+                    <text x="-58" y="-8" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.4)" letter-spacing="1" font-weight="600">CRECIMIENTO</text>
+                    <rect x="-58" y="20" width="10" height="30" rx="1" fill="rgba(237,104,69,0.4)"/>
+                    <rect x="-42" y="14" width="10" height="36" rx="1" fill="rgba(237,104,69,0.55)"/>
+                    <rect x="-26" y="8" width="10" height="42" rx="1" fill="rgba(237,104,69,0.7)"/>
+                    <rect x="-10" y="2" width="10" height="48" rx="1" fill="rgba(237,104,69,0.85)"/>
+                    <rect x="6" y="-2" width="10" height="52" rx="1" fill="#ED6845"/>
+                    <rect x="22" y="-6" width="10" height="56" rx="1" fill="#ED6845"/>
+                    <rect x="38" y="-10" width="10" height="60" rx="1" fill="#ED6845"/>
+                    <polyline points="-53,28 -37,22 -21,16 -5,10 11,6 27,2 43,-2" fill="none" stroke="#ED6845" stroke-width="1.2" stroke-linecap="round"/>
+                    <path d="M -150 70 L 150 70 L 145 80 L -145 80 Z" fill="#2a2a27" stroke="#3a3a36" stroke-width="1"/>
+                    <ellipse cx="0" cy="80" rx="14" ry="1.5" fill="#1a1a18"/>
+                  </g>
+                  </a>
+                  <text class="eco-label-gris" x="490" y="240" text-anchor="middle" font-size="13">SOFTWARE ALL IN ONE</text>
+
+                  <!-- ╔══ APP MÓVIL GRANDE (izquierda) ══╗ -->
+                  <a href="https://mirkotrain.github.io/navegaci-n-app/#hoy" target="_blank" rel="noopener" class="eco-link">
+                  <g transform="translate(170 160) scale(0.8)">
+                    <rect x="-50" y="-95" width="100" height="180" rx="14" fill="#0e0e0c" stroke="#3a3a36" stroke-width="2"/>
+                    <rect x="-44" y="-89" width="88" height="168" rx="8" fill="#1a1a18"/>
+                    <rect x="-13" y="-89" width="26" height="6" rx="3" fill="#0e0e0c"/>
+                    <text x="-32" y="-75" font-size="6" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.8)" font-weight="700">9:41</text>
+                    <rect x="28" y="-78" width="10" height="4" rx="1" fill="rgba(255,255,255,0.6)"/>
+                    <circle cx="-32" cy="-62" r="6" fill="#ED6845"/>
+                    <rect x="-22" y="-65" width="42" height="3.5" rx="1.5" fill="rgba(255,255,255,0.75)"/>
+                    <rect x="-22" y="-59" width="28" height="2.5" rx="1.25" fill="rgba(255,255,255,0.4)"/>
+                    <rect x="-38" y="-50" width="76" height="34" rx="4" fill="rgba(237,104,69,0.2)" stroke="rgba(237,104,69,0.4)" stroke-width="0.8"/>
+                    <rect x="-32" y="-44" width="44" height="3" rx="1.5" fill="rgba(255,255,255,0.85)"/>
+                    <rect x="-32" y="-39" width="34" height="2.5" rx="1.25" fill="rgba(255,255,255,0.5)"/>
+                    <rect x="-32" y="-34" width="20" height="3" rx="1.5" fill="#ED6845"/>
+                    <text x="22" y="-24" font-size="5" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="700">→</text>
+                    <rect x="-38" y="-12" width="76" height="26" rx="4" fill="#23231e" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+                    <rect x="-32" y="-6" width="34" height="3" rx="1.5" fill="rgba(255,255,255,0.7)"/>
+                    <rect x="-32" y="-1" width="26" height="2.5" rx="1.25" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="28" cy="0" r="4" fill="#ED6845"/>
+                    <text x="28" y="2" font-size="5" text-anchor="middle" font-family="Host Grotesk,sans-serif" fill="#fff" font-weight="800">+</text>
+                    <rect x="-38" y="18" width="76" height="26" rx="4" fill="#23231e" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+                    <circle cx="-30" cy="31" r="4" fill="#ED6845"/>
+                    <rect x="-22" y="25" width="36" height="3" rx="1.5" fill="rgba(255,255,255,0.6)"/>
+                    <rect x="-22" y="30" width="26" height="2.5" rx="1.25" fill="rgba(255,255,255,0.35)"/>
+                    <rect x="-22" y="35" width="14" height="2.5" rx="1.25" fill="rgba(255,255,255,0.25)"/>
+                    <rect x="-44" y="56" width="88" height="20" fill="#0e0e0c"/>
+                    <circle cx="-22" cy="66" r="2.5" fill="#ED6845"/>
+                    <circle cx="-7" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="8" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="23" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <rect x="-18" y="78" width="36" height="2" rx="1" fill="rgba(255,255,255,0.4)"/>
+                  </g>
+                  </a>
+                  <text class="eco-label-gris" x="170" y="250" text-anchor="middle" font-size="13">EXPERIENCIA CLIENTE</text>
+
+                  <!-- ╔══ TORNO DE ACCESO (derecha arriba) ══╗ -->
+                  <g transform="translate(770 95) scale(0.85)">
+                    <rect x="-18" y="-58" width="36" height="92" rx="5" fill="#23231e" stroke="rgba(237,104,69,0.55)" stroke-width="1.6"/>
+                    <circle cx="0" cy="-44" r="5" fill="#ED6845">
+                      <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <rect x="-12" y="-32" width="24" height="16" rx="2" fill="#0e0e0c" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+                    <path d="M -5 -25 L -2 -22 L 5 -28" stroke="#ED6845" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="0" y="-10" text-anchor="middle" font-size="3.5" font-family="Host Grotesk,sans-serif" fill="rgba(237,104,69,0.85)" font-weight="700" letter-spacing="0.4">ACCESO</text>
+                    <rect x="-9" y="-4" width="18" height="18" rx="2" fill="#1a1a18" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+                    <rect x="-6" y="-1" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="3" y="-1" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="-6" y="8" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="-1.5" y="3.5" width="3" height="3" fill="rgba(237,104,69,0.8)"/>
+                    <rect x="3" y="8" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="18" y="8" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="18" y="14" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-50" y="8" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-50" y="14" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-26" y="34" width="52" height="5" rx="1.5" fill="#3a3a36"/>
+                  </g>
+                  <text class="eco-label-gris" x="770" y="160" text-anchor="middle" font-size="12">CONTROL DE ACCESO</text>
+
+                  <!-- ╔══ TARJETA DE CRÉDITO (derecha abajo, junto al torno) ══╗ -->
+                  <g transform="translate(770 245) scale(0.85)">
+                    <rect x="-58" y="-30" width="116" height="70" rx="8" fill="url(#cardGrad)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <path d="M -58 -30 L 58 -30 L 58 -10 Z" fill="rgba(255,255,255,0.08)"/>
+                    <rect x="-46" y="-12" width="18" height="14" rx="2" fill="#d4af37" opacity="0.85"/>
+                    <line x1="-42" y1="-8" x2="-30" y2="-8" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <line x1="-42" y1="-4" x2="-30" y2="-4" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <line x1="-42" y1="0" x2="-30" y2="0" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <g transform="translate(-10 -3)" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round">
+                      <path d="M 0 -5 Q 3 0 0 5"/>
+                      <path d="M 4 -7 Q 8 0 4 7"/>
+                      <path d="M 8 -9 Q 13 0 8 9"/>
+                    </g>
+                    <text x="-44" y="20" font-size="7" font-family="monospace" fill="#fff" font-weight="700" letter-spacing="1.5">**** **** **** 8845</text>
+                    <text x="-44" y="32" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.85)" font-weight="700" letter-spacing="0.5">trainingym</text>
+                    <text x="36" y="32" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.6)" letter-spacing="1.5" font-weight="600">PAY</text>
+                  </g>
+                  <text class="eco-label-gris" x="770" y="295" text-anchor="middle" font-size="12">CONTROL DE PAGOS</text>
+                </svg>
+              </div>
+              <div class="cap-ft">
+                <span class="cap-ft-label">Bienvenida</span>
+                <span class="cap-ft-arrow">──▶</span>
+                <span class="cap-ft-label">Experiencia</span>
+                <span class="cap-ft-arrow">──▶</span>
+                <span class="cap-ft-label">Comunidad</span>
+                <span class="cap-ft-eq">=</span>
+                <div class="cap-ft-goal">
+                  <span class="cap-ft-num">+30%</span>
+                  <span class="cap-ft-desc">ingresos ·<br>+4 meses LTV</span>
+                </div>
+              </div>
+              <div class="palanca-zoom-hint">↗ Click para ver</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PALANCA 4: INGRESOS ── -->
+      <div class="palanca-col" id="pal-ing" data-name="Ingresos" onclick="onPalancaClick('ing', event)">
+
+        <div class="palanca-head">
+          <span class="palanca-head-name">Ingresos</span>
+        </div>
+        <div class="palanca-mini-stat">+40% aumento de ingresos</div>
+        <div class="palanca-body">
+          <div class="cap-embed">
+            <div class="cap-embed-inner">
+              <div class="cap-tl-wrap">
+                <div class="cap-h-line"><div class="cap-dot-2"></div></div>
+                <div class="cap-timeline">
+                  <div class="cap-item">
+                    <p class="cap-kicker">Un <span class="cap-hl">cliente que no se va</span>.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Permanencia — la palanca que aporta el 30% del incremento de ingresos.</p>
+                    <p class="cap-desc">Comunidad, bienvenida, seguimiento y tecnología — cada acción suma meses de vida media.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                  <div class="cap-item">
+                    <p class="cap-kicker"><span class="cap-hl">Upselling</span> — dar más valor.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Cuota básica de entrada + cuota premium — el modelo que ya funciona en otras industrias.</p>
+                    <p class="cap-desc">Del acceso básico al servicio premium — un camino natural que el cliente sube solo.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                  <div class="cap-item">
+                    <p class="cap-kicker"><span class="cap-hl">Cross-selling</span> — ingresos que ya tienes.</p>
+                    <div class="cap-sep"></div>
+                    <p class="cap-headline">Nutrición, entrenamiento personal, masterclasses — fácil de comprar, alto margen.</p>
+                    <p class="cap-desc">Solo el 1-5% de tus clientes usa estos servicios. El problema no es el servicio — es el acceso.</p>
+                    <div class="cap-hint"><div class="cap-hint-line"></div><span class="cap-hint-txt">Ver más</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="cap-ecosystem">
+                <svg class="cap-eco-svg" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#252523"/>
+                      <stop offset="100%" stop-color="#1a1a18"/>
+                    </linearGradient>
+                    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#ED6845"/>
+                      <stop offset="100%" stop-color="#c44d2e"/>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Líneas punteadas conectando satélites al centro -->
+                  <line class="eco-line" x1="490" y1="170" x2="240" y2="170"/>
+                  <line class="eco-line" x1="585" y1="140" x2="745" y2="100"/>
+                  <line class="eco-line" x1="585" y1="200" x2="745" y2="240"/>
+
+                  <!-- ╔══ CENTRO: MAC LAPTOP CON DASHBOARD ══╗ -->
+                  <a href="https://app.tgmanager.com/auth" target="_blank" rel="noopener" class="eco-link">
+                  <g transform="translate(490 160) scale(0.8)">
+                    <rect x="-130" y="-90" width="260" height="160" rx="10" fill="#0e0e0c" stroke="#3a3a36" stroke-width="1.5"/>
+                    <rect x="-122" y="-82" width="244" height="144" rx="4" fill="url(#screenGrad)"/>
+                    <rect x="-122" y="-82" width="244" height="18" rx="4" fill="#2a2a27"/>
+                    <circle cx="-110" cy="-73" r="3" fill="#ED6845"/>
+                    <circle cx="-100" cy="-73" r="3" fill="#444"/>
+                    <circle cx="-90" cy="-73" r="3" fill="#444"/>
+                    <rect x="-72" y="-80" width="80" height="14" rx="3" fill="#0e0e0c"/>
+                    <text x="-32" y="-70" text-anchor="middle" font-size="7" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.6)" font-weight="600">Trainingym</text>
+                    <rect x="-122" y="-64" width="50" height="126" fill="#1f1f1d"/>
+                    <rect x="-115" y="-55" width="36" height="4" rx="2" fill="#ED6845"/>
+                    <rect x="-115" y="-45" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-37" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-29" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-21" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-115" y="-13" width="32" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+                    <rect x="-66" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="-38" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">+30%</text>
+                    <text x="-38" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">INGRESOS</text>
+                    <rect x="-2" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="26" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">+40%</text>
+                    <text x="26" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">CLIENTES</text>
+                    <rect x="62" y="-58" width="56" height="32" rx="3" fill="rgba(237,104,69,0.12)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <text x="90" y="-46" text-anchor="middle" font-size="11" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="800">x6</text>
+                    <text x="90" y="-36" text-anchor="middle" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.5)" letter-spacing="1">LTV</text>
+                    <rect x="-66" y="-18" width="184" height="74" rx="3" fill="#1a1a18" stroke="rgba(255,255,255,0.06)" stroke-width="0.8"/>
+                    <text x="-58" y="-8" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.4)" letter-spacing="1" font-weight="600">CRECIMIENTO</text>
+                    <rect x="-58" y="20" width="10" height="30" rx="1" fill="rgba(237,104,69,0.4)"/>
+                    <rect x="-42" y="14" width="10" height="36" rx="1" fill="rgba(237,104,69,0.55)"/>
+                    <rect x="-26" y="8" width="10" height="42" rx="1" fill="rgba(237,104,69,0.7)"/>
+                    <rect x="-10" y="2" width="10" height="48" rx="1" fill="rgba(237,104,69,0.85)"/>
+                    <rect x="6" y="-2" width="10" height="52" rx="1" fill="#ED6845"/>
+                    <rect x="22" y="-6" width="10" height="56" rx="1" fill="#ED6845"/>
+                    <rect x="38" y="-10" width="10" height="60" rx="1" fill="#ED6845"/>
+                    <polyline points="-53,28 -37,22 -21,16 -5,10 11,6 27,2 43,-2" fill="none" stroke="#ED6845" stroke-width="1.2" stroke-linecap="round"/>
+                    <path d="M -150 70 L 150 70 L 145 80 L -145 80 Z" fill="#2a2a27" stroke="#3a3a36" stroke-width="1"/>
+                    <ellipse cx="0" cy="80" rx="14" ry="1.5" fill="#1a1a18"/>
+                  </g>
+                  </a>
+                  <text class="eco-label-gris" x="490" y="240" text-anchor="middle" font-size="13">SOFTWARE ALL IN ONE</text>
+
+                  <!-- ╔══ APP MÓVIL GRANDE (izquierda) ══╗ -->
+                  <a href="https://mirkotrain.github.io/navegaci-n-app/#hoy" target="_blank" rel="noopener" class="eco-link">
+                  <g transform="translate(170 160) scale(0.8)">
+                    <rect x="-50" y="-95" width="100" height="180" rx="14" fill="#0e0e0c" stroke="#3a3a36" stroke-width="2"/>
+                    <rect x="-44" y="-89" width="88" height="168" rx="8" fill="#1a1a18"/>
+                    <rect x="-13" y="-89" width="26" height="6" rx="3" fill="#0e0e0c"/>
+                    <text x="-32" y="-75" font-size="6" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.8)" font-weight="700">9:41</text>
+                    <rect x="28" y="-78" width="10" height="4" rx="1" fill="rgba(255,255,255,0.6)"/>
+                    <circle cx="-32" cy="-62" r="6" fill="#ED6845"/>
+                    <rect x="-22" y="-65" width="42" height="3.5" rx="1.5" fill="rgba(255,255,255,0.75)"/>
+                    <rect x="-22" y="-59" width="28" height="2.5" rx="1.25" fill="rgba(255,255,255,0.4)"/>
+                    <rect x="-38" y="-50" width="76" height="34" rx="4" fill="rgba(237,104,69,0.2)" stroke="rgba(237,104,69,0.4)" stroke-width="0.8"/>
+                    <rect x="-32" y="-44" width="44" height="3" rx="1.5" fill="rgba(255,255,255,0.85)"/>
+                    <rect x="-32" y="-39" width="34" height="2.5" rx="1.25" fill="rgba(255,255,255,0.5)"/>
+                    <rect x="-32" y="-34" width="20" height="3" rx="1.5" fill="#ED6845"/>
+                    <text x="22" y="-24" font-size="5" font-family="Host Grotesk,sans-serif" fill="#ED6845" font-weight="700">→</text>
+                    <rect x="-38" y="-12" width="76" height="26" rx="4" fill="#23231e" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+                    <rect x="-32" y="-6" width="34" height="3" rx="1.5" fill="rgba(255,255,255,0.7)"/>
+                    <rect x="-32" y="-1" width="26" height="2.5" rx="1.25" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="28" cy="0" r="4" fill="#ED6845"/>
+                    <text x="28" y="2" font-size="5" text-anchor="middle" font-family="Host Grotesk,sans-serif" fill="#fff" font-weight="800">+</text>
+                    <rect x="-38" y="18" width="76" height="26" rx="4" fill="#23231e" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+                    <circle cx="-30" cy="31" r="4" fill="#ED6845"/>
+                    <rect x="-22" y="25" width="36" height="3" rx="1.5" fill="rgba(255,255,255,0.6)"/>
+                    <rect x="-22" y="30" width="26" height="2.5" rx="1.25" fill="rgba(255,255,255,0.35)"/>
+                    <rect x="-22" y="35" width="14" height="2.5" rx="1.25" fill="rgba(255,255,255,0.25)"/>
+                    <rect x="-44" y="56" width="88" height="20" fill="#0e0e0c"/>
+                    <circle cx="-22" cy="66" r="2.5" fill="#ED6845"/>
+                    <circle cx="-7" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="8" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <circle cx="23" cy="66" r="2.5" fill="rgba(255,255,255,0.35)"/>
+                    <rect x="-18" y="78" width="36" height="2" rx="1" fill="rgba(255,255,255,0.4)"/>
+                  </g>
+                  </a>
+                  <text class="eco-label-gris" x="170" y="250" text-anchor="middle" font-size="13">EXPERIENCIA CLIENTE</text>
+
+                  <!-- ╔══ TORNO DE ACCESO (derecha arriba) ══╗ -->
+                  <g transform="translate(770 95) scale(0.85)">
+                    <rect x="-18" y="-58" width="36" height="92" rx="5" fill="#23231e" stroke="rgba(237,104,69,0.55)" stroke-width="1.6"/>
+                    <circle cx="0" cy="-44" r="5" fill="#ED6845">
+                      <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <rect x="-12" y="-32" width="24" height="16" rx="2" fill="#0e0e0c" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+                    <path d="M -5 -25 L -2 -22 L 5 -28" stroke="#ED6845" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="0" y="-10" text-anchor="middle" font-size="3.5" font-family="Host Grotesk,sans-serif" fill="rgba(237,104,69,0.85)" font-weight="700" letter-spacing="0.4">ACCESO</text>
+                    <rect x="-9" y="-4" width="18" height="18" rx="2" fill="#1a1a18" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+                    <rect x="-6" y="-1" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="3" y="-1" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="-6" y="8" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="-1.5" y="3.5" width="3" height="3" fill="rgba(237,104,69,0.8)"/>
+                    <rect x="3" y="8" width="3" height="3" fill="rgba(237,104,69,0.5)"/>
+                    <rect x="18" y="8" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="18" y="14" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-50" y="8" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-50" y="14" width="32" height="4" rx="2" fill="#3a3a36" stroke="rgba(237,104,69,0.3)" stroke-width="0.5"/>
+                    <rect x="-26" y="34" width="52" height="5" rx="1.5" fill="#3a3a36"/>
+                  </g>
+                  <text class="eco-label-gris" x="770" y="160" text-anchor="middle" font-size="12">CONTROL DE ACCESO</text>
+
+                  <!-- ╔══ TARJETA DE CRÉDITO (derecha abajo, junto al torno) ══╗ -->
+                  <g transform="translate(770 245) scale(0.85)">
+                    <rect x="-58" y="-30" width="116" height="70" rx="8" fill="url(#cardGrad)" stroke="rgba(237,104,69,0.3)" stroke-width="0.8"/>
+                    <path d="M -58 -30 L 58 -30 L 58 -10 Z" fill="rgba(255,255,255,0.08)"/>
+                    <rect x="-46" y="-12" width="18" height="14" rx="2" fill="#d4af37" opacity="0.85"/>
+                    <line x1="-42" y1="-8" x2="-30" y2="-8" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <line x1="-42" y1="-4" x2="-30" y2="-4" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <line x1="-42" y1="0" x2="-30" y2="0" stroke="#8a7a2a" stroke-width="0.5"/>
+                    <g transform="translate(-10 -3)" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round">
+                      <path d="M 0 -5 Q 3 0 0 5"/>
+                      <path d="M 4 -7 Q 8 0 4 7"/>
+                      <path d="M 8 -9 Q 13 0 8 9"/>
+                    </g>
+                    <text x="-44" y="20" font-size="7" font-family="monospace" fill="#fff" font-weight="700" letter-spacing="1.5">**** **** **** 8845</text>
+                    <text x="-44" y="32" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.85)" font-weight="700" letter-spacing="0.5">trainingym</text>
+                    <text x="36" y="32" font-size="5" font-family="Host Grotesk,sans-serif" fill="rgba(255,255,255,0.6)" letter-spacing="1.5" font-weight="600">PAY</text>
+                  </g>
+                  <text class="eco-label-gris" x="770" y="295" text-anchor="middle" font-size="12">CONTROL DE PAGOS</text>
+                </svg>
+              </div>
+              <div class="cap-ft">
+                <span class="cap-ft-label">Permanencia</span>
+                <span class="cap-ft-pct">+30%</span>
+                <span class="cap-ft-arrow">──▶</span>
+                <span class="cap-ft-label">Upselling</span>
+                <span class="cap-ft-pct">+5%</span>
+                <span class="cap-ft-arrow">──▶</span>
+                <span class="cap-ft-label">Cross-selling</span>
+                <span class="cap-ft-pct">+5%</span>
+                <span class="cap-ft-eq">=</span>
+                <div class="cap-ft-goal">
+                  <span class="cap-ft-num">+40%</span>
+                  <span class="cap-ft-desc">aumento de<br>ingresos</span>
+                </div>
+              </div>
+              <div class="palanca-zoom-hint">↗ Click para ver</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /palancas-grid -->
+  </div><!-- /palancas-row -->
+
+  <!-- Hint que aparece solo en home mode -->
+  <div class="home-hint">Pulsa una palanca para descubrir la metodología</div>
+
+  </section><!-- /methodology-section -->
+
+
+  <script>
+  // ── VOLVER A LA HOME ──
+  function goHome() {
+    document.body.classList.add('home-mode');
+    const grid = document.getElementById('palancas-grid');
+    if (grid) grid.classList.remove('zoom-cap', 'zoom-tiem', 'zoom-fid', 'zoom-ing');
+    document.querySelectorAll('.palanca-col').forEach(col => col.classList.remove('active'));
+    document.querySelectorAll('.palanca-tab').forEach(t => t.classList.remove('on'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── ZOOM DE PALANCAS ──
+  function zoomPalanca(id) {
+    if (document.body.classList.contains('home-mode')) {
+      document.body.classList.remove('home-mode');
+    }
+    document.querySelectorAll('.palanca-tab').forEach(t => {
+      t.classList.toggle('on', t.dataset.palanca === id);
+    });
+    if (window.innerWidth <= 1100) {
+      const el = document.getElementById('pal-' + id);
+      if (el) {
+        const tabs = document.querySelector('.palanca-tabs');
+        const tabsHeight = tabs ? tabs.offsetHeight : 0;
+        const elTop = el.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({ top: elTop - tabsHeight - 12, behavior: 'smooth' });
+      }
+      return;
+    }
+    const grid = document.getElementById('palancas-grid');
+    grid.classList.remove('zoom-cap', 'zoom-tiem', 'zoom-fid', 'zoom-ing');
+    grid.classList.add('zoom-' + id);
+    document.querySelectorAll('.palanca-col').forEach(col => col.classList.remove('active'));
+    document.getElementById('pal-' + id).classList.add('active');
+  }
+
+  function onPalancaClick(id, event) {
+    if (document.getElementById('pal-' + id).classList.contains('active')) return;
+    zoomPalanca(id);
+  }
+
+  // ── En móvil: detectar qué palanca está visible al hacer scroll y resaltar tab ──
+  function setupMobileScrollObserver() {
+    if (window.innerWidth > 1100) return;
+    const palancaIds = ['cap', 'tiem', 'fid', 'ing'];
+    const observer = new IntersectionObserver((entries) => {
+      let bestId = null;
+      let bestRatio = 0;
+      entries.forEach(entry => {
+        if (entry.intersectionRatio > bestRatio) {
+          bestRatio = entry.intersectionRatio;
+          bestId = entry.target.id.replace('pal-', '');
+        }
+      });
+      if (bestId && bestRatio > 0.3) {
+        document.querySelectorAll('.palanca-tab').forEach(t => {
+          t.classList.toggle('on', t.dataset.palanca === bestId);
+        });
+      }
+    }, { threshold: [0.3, 0.5, 0.7] });
+    palancaIds.forEach(id => {
+      const el = document.getElementById('pal-' + id);
+      if (el) observer.observe(el);
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupMobileScrollObserver);
+  } else {
+    setupMobileScrollObserver();
+  }
+  let _resizeT = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(_resizeT);
+    _resizeT = setTimeout(setupMobileScrollObserver, 200);
+  });
+
+  // ── HASH ROUTING simple (solo palancas, sin modales) ──
+  const PALANCAS = ['cap','tiem','fid','ing'];
+  let _routingInternal = false;
+  function setRouteHash(h) {
+    _routingInternal = true;
+    if (h) { if (location.hash !== '#' + h) location.hash = h; }
+    else { history.replaceState('', document.title, location.pathname + location.search); }
+    setTimeout(() => { _routingInternal = false; }, 30);
+  }
+  function applyHashRoute() {
+    const h = location.hash.slice(1);
+    if (!h) {
+      if (!document.body.classList.contains('home-mode')) {
+        document.body.classList.add('home-mode');
+        const grid = document.getElementById('palancas-grid');
+        if (grid) grid.classList.remove('zoom-cap','zoom-tiem','zoom-fid','zoom-ing');
+        document.querySelectorAll('.palanca-col').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.palanca-tab').forEach(t => t.classList.remove('on'));
+      }
+      return;
+    }
+    if (!PALANCAS.includes(h)) return;
+    const palEl = document.getElementById('pal-' + h);
+    if (document.body.classList.contains('home-mode') || !palEl || !palEl.classList.contains('active')) {
+      _routingInternal = true; zoomPalanca(h); _routingInternal = false;
+    }
+  }
+  const _origGoHome = window.goHome;
+  window.goHome = function() { _origGoHome.apply(this, arguments); if (!_routingInternal) setRouteHash(''); };
+  const _origZoom = window.zoomPalanca;
+  window.zoomPalanca = function(id) { _origZoom.apply(this, arguments); if (!_routingInternal) setRouteHash(id); };
+  window.addEventListener('hashchange', () => { if (_routingInternal) return; applyHashRoute(); });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyHashRoute);
+  else applyHashRoute();
+
+  // ── MODAL QR — Dinámico (reunión / cotización / licencia) ──
+  const QR_DATA = {
+    reunion: {
+      title: 'Reserva una reunión con un experto de Trainingym',
+      url:   'https://meetings.hubspot.com/sesion-consultiva/sesion-consultiva-ventas-de-ia-mirko',
+      cta:   'Reservar reunión'
+    },
+    cotizacion: {
+      title: 'Bloquea tu cotización y llévate un 10% extra de descuento firmando un acuerdo ahora mismo',
+      url:   'https://eform.pandadoc.com/?eform=0d6b5058-921b-493f-862a-92de5c0fbb29',
+      cta:   'Firmar acuerdo ahora'
+    },
+    licencia: {
+      title: 'Crea y activa una licencia de Trainingym gratuita en menos de 1 minuto',
+      url:   'https://app.tgmanager.com/auth',
+      cta:   'Crear licencia gratis'
+    }
+  };
+  function openQrModal(key) {
+    const d = QR_DATA[key] || QR_DATA.reunion;
+    document.getElementById('qr-title').textContent = d.title;
+    document.getElementById('qr-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=' + encodeURIComponent(d.url);
+    const link = document.getElementById('qr-link');
+    link.href = d.url;
+    link.textContent = d.cta + ' →';
+    document.getElementById('qr-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeQrModal() {
+    document.getElementById('qr-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function qrOverlayClick(e) {
+    if (e.target === document.getElementById('qr-overlay')) closeQrModal();
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const ov = document.getElementById('qr-overlay');
+      if (ov && ov.classList.contains('open')) closeQrModal();
+    }
+  });
+  </script>
+
+
+  <!-- Modal QR — Contenido dinámico (reunión / cotización / licencia) -->
+  <div class="qr-overlay" id="qr-overlay" onclick="qrOverlayClick(event)">
+    <div class="qr-modal" role="dialog" aria-labelledby="qr-title">
+      <button class="qr-close" onclick="closeQrModal()" aria-label="Cerrar">✕</button>
+      <h2 class="qr-title" id="qr-title">Reserva una reunión con un experto de Trainingym</h2>
+      <div class="qr-img-wrap">
+        <img id="qr-img" src="" alt="Código QR">
+      </div>
+      <p class="qr-hint">Escanea el código con la cámara de tu móvil</p>
+      <a class="qr-link" id="qr-link" href="#" target="_blank" rel="noopener">o reserva aquí mismo →</a>
+    </div>
+  </div>
+
+</body>
+</html>
